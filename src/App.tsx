@@ -1,4 +1,5 @@
-import { AppBar, Toolbar, Typography, Container, Box, Paper, Link } from '@mui/material';
+import { AppBar, Toolbar, Typography, Container, Box, Paper} from '@mui/material';
+import TeamCarousel from './components/TeamCarousel';
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
 
       {/* Hero Section */}
       <Container sx={{ textAlign: 'center', mt: 8 }}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           Pokémon battling in Smogon/VCG Worlds
         </Typography>
         <Typography variant="h5" gutterBottom>
@@ -29,25 +30,18 @@ function App() {
             bgcolor: '#1a1f2c', 
             color: '#c0c0c0', 
             p: 3, 
-            border: '1px solid #333', 
+            border: 'px solid #333', 
             borderRadius: '8px'
           }}
         >
           <Typography variant="h6" gutterBottom sx={{ color: '#ffffff' }}>
-            About This Tool
+            Build A Team
           </Typography>
-          <Typography variant="body2" paragraph>
-            This tracker lets players explore Pokémon usage trends from Smogon and VGC over time.
+          <Typography variant="body1">
+            In competitve pokemon, a player is in charge of selecting 6 different Pokemon with differnt types, abilities and roles.
           </Typography>
-          <Typography variant="body2" paragraph>
-            Discover how formats evolve, which Pokémon dominate, and build your team based on real data.
-          </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-            <Box sx={{ width: '12px', height: '12px', bgcolor: '#f8f800', borderRadius: '2px', mr: 1 }}></Box>
-            <Link href="#" underline="hover" sx={{ color: '#f8f800'}}>
-              Read more about our data update
-            </Link>
-          </Box>
+          <TeamCarousel />
+
         </Paper>
       </Container>
     </Box>
