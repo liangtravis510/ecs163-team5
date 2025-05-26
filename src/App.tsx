@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import TeamCarousel from "./components/TeamCarousel";
 import TypeChartHeatmap from "./components/TypeChartHeatmap";
+import StatOverview from "./components/StatOverview";
 
 function App() {
   return (
@@ -58,7 +59,7 @@ function App() {
         </Paper>
       </Container>
 
-      {/* Intro to Building a Team*/}
+      {/* Typing heatmap*/}
       <Container sx={{ mt: 8, maxWidth: "md" }}>
         <Paper
           elevation={0}
@@ -74,8 +75,12 @@ function App() {
             Typing Advantages/Disadvantages
           </Typography>
           <Typography variant="body1">
-            For each move in pokemon has a type and could be effective, super
-            effective, not effective, or has no effect at all
+            With every combination of pokemon types comes strengths and
+            weaknesses. Some grant immunity to certain type moves, others
+            provide significantly larger advantages/disadvantages but it is up
+            to the trainer to find the best way to navigate certain
+            weaknesses/strengths. Below shows examples of type combinations and
+            their weakness/advantages based on certain typing of their attacks.
           </Typography>
           <TypeChartHeatmap />
           <Box
@@ -113,6 +118,25 @@ function App() {
               </Box>
             ))}
           </Box>
+        </Paper>
+      </Container>
+
+      <Container sx={{ mt: 8, maxWidth: "md" }}>
+        <Paper
+          elevation={0}
+          sx={{
+            bgcolor: "#1a1f2c",
+            color: "#c0c0c0",
+            p: 3,
+            border: "px solid #333",
+            borderRadius: "8px",
+          }}
+        >
+          <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
+            How do stats effect Pokemon Battles
+          </Typography>
+
+          <StatOverview />
         </Paper>
       </Container>
     </Box>
