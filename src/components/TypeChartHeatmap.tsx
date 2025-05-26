@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { types, typeChart } from "../utils/typeChart";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 
 const typeColors: Record<string, string> = {
@@ -330,6 +336,18 @@ export default function TypeChartHeatmap() {
         </Select>
       </FormControl>
       <div style={{ overflowX: "auto", padding: "1rem" }}>
+        <Typography
+          variant="h6"
+          sx={{ color: "white", fontWeight: "bold", mb: 1 }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          Type Effectiveness Heatmap
+        </Typography>
+
         <svg ref={ref}></svg>
       </div>
     </div>
