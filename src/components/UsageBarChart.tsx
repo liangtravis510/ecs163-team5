@@ -75,6 +75,20 @@ export default function UsageBarChart() {
           .duration(800)
           .attr("y", (d) => y(d.usage))
           .attr("height", (d) => y(0) - y(d.usage));
+        // Usage % labels above bars
+        svg
+          .selectAll("text.usage-label")
+          .data(filtered)
+          .enter()
+          .append("text")
+          .attr("class", "usage-label")
+          .attr("x", (d: any) => x(d.name)! + x.bandwidth() / 2)
+          .attr("y", (d: any) => y(d.usage) - 8)
+          .attr("text-anchor", "middle")
+          .style("fill", "#000")
+          .style("font-size", "16px")
+          .style("font-weight", "bold")
+          .text((d: any) => `${d.usage.toFixed(1)}%`);
 
         // X-Axis
         const xAxis = svg
@@ -89,7 +103,7 @@ export default function UsageBarChart() {
           .attr("text-anchor", "end")
           .attr("x", -5)
           .attr("y", 10)
-          .style("font-size", "10px")
+          .style("font-size", "13px")
           .style("font-weight", "bold")
           .attr("fill", "#333");
 

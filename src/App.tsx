@@ -122,6 +122,7 @@ function App() {
         </Paper>
       </Container>
 
+      {/* attributes chart*/}
       <Container sx={{ mt: 8, maxWidth: "md" }}>
         <Paper
           elevation={0}
@@ -141,6 +142,7 @@ function App() {
         </Paper>
       </Container>
 
+      {/* Usage Bar Chart*/}
       <Container maxWidth={false} sx={{ mt: 8, px: 4 }}>
         <Paper
           elevation={0}
