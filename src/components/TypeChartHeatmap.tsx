@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { types, typeChart } from "../utils/typeChart";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 
 const typeColors: Record<string, string> = {
@@ -88,7 +94,7 @@ export default function TypeChartHeatmap() {
     const colorScale = d3
       .scaleLinear<string>()
       .domain([0, 0.5, 1, 2, 4])
-      .range(["#222", "#4a90e2", "#fff", "#f44", "#ff2222"]);
+      .range(["#222", "#4a90e2", "#fff", "pink", "#ff2222"]);
 
     // Header labels styled like type-icon boxes
     const headers = [
@@ -304,7 +310,7 @@ export default function TypeChartHeatmap() {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <FormControl sx={{ minWidth: 220, marginBottom: 2, marginTop: 2 }}>
+      <FormControl sx={{ minWidth: 220, marginBottom: 4, marginTop: 4 }}>
         <InputLabel sx={{ color: "white", fontSize: 11, fontWeight: "bold" }}>
           Primary Type
         </InputLabel>
@@ -330,6 +336,18 @@ export default function TypeChartHeatmap() {
         </Select>
       </FormControl>
       <div style={{ overflowX: "auto", padding: "1rem" }}>
+        <Typography
+          variant="h6"
+          sx={{ color: "white", fontWeight: "bold", mb: 1 }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          Type Effectiveness Heatmap
+        </Typography>
+
         <svg ref={ref}></svg>
       </div>
     </div>
