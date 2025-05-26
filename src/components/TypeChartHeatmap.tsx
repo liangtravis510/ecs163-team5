@@ -88,7 +88,7 @@ export default function TypeChartHeatmap() {
     const colorScale = d3
       .scaleLinear<string>()
       .domain([0, 0.5, 1, 2, 4])
-      .range(["#222", "#4a90e2", "#fff", "#f44", "#ff2222"]);
+      .range(["#222", "#4a90e2", "#fff", "pink", "#ff2222"]);
 
     // Header labels styled like type-icon boxes
     const headers = [
@@ -304,7 +304,7 @@ export default function TypeChartHeatmap() {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <FormControl sx={{ minWidth: 220, marginBottom: 2, marginTop: 2 }}>
+      <FormControl sx={{ minWidth: 220, marginBottom: 4, marginTop: 4 }}>
         <InputLabel sx={{ color: "white", fontSize: 11, fontWeight: "bold" }}>
           Primary Type
         </InputLabel>

@@ -93,11 +93,11 @@ function App() {
             }}
           >
             {[
-              { label: "Super Effective (2×)", color: "#f44" },
-              { label: "Double Weak (4×)", color: "#ff2222" },
-              { label: "Effective (1×)", color: "#fff", border: "#ccc" },
-              { label: "Not Very Effective (½×)", color: "#4a90e2" },
               { label: "No Effect (0×)", color: "#222" },
+              { label: "Not Very Effective (½×)", color: "#4a90e2" },
+              { label: "Effective (1×)", color: "#fff", border: "#ccc" },
+              { label: "Super Effective (2×)", color: "pink" },
+              { label: "Double Weak (4×)", color: "#ff2222" },
             ].map(({ label, color, border }) => (
               <Box
                 key={label}
