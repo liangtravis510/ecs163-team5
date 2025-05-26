@@ -9,6 +9,7 @@ import {
 import TeamCarousel from "./components/TeamCarousel";
 import TypeChartHeatmap from "./components/TypeChartHeatmap";
 import StatOverview from "./components/StatOverview";
+import UsageBarChart from "./components/UsageBarChart";
 
 function App() {
   return (
@@ -137,6 +138,20 @@ function App() {
           </Typography>
 
           <StatOverview />
+        </Paper>
+      </Container>
+
+      <Container maxWidth={false} sx={{ mt: 8, px: 4 }}>
+        <Paper
+          elevation={0}
+          sx={{
+            bgcolor: "#1a1f2c",
+            color: "#c0c0c0",
+            p: 4, // more padding for breathing room
+            borderRadius: "8px",
+          }}
+        >
+          <UsageBarChart />
         </Paper>
       </Container>
     </Box>
