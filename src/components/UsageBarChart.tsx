@@ -60,6 +60,20 @@ export default function UsageBarChart() {
 
         const color = d3.scaleOrdinal(d3.schemeTableau10);
 
+        // Create tooltip div
+        const tooltip = d3
+          .select("body")
+          .append("div")
+          .style("position", "absolute")
+          .style("background", "black")
+          .style("color", "white")
+          .style("padding", "10px")
+          .style("margin", "10px")
+          .style("border-radius", "5px")
+          .style("pointer-events", "none")
+          .style("opacity", 0)
+          .style("z-index", 10);
+
         // Bars with animation
         svg
           .selectAll("rect")
@@ -71,10 +85,46 @@ export default function UsageBarChart() {
           .attr("y", y(0))
           .attr("height", 0)
           .attr("fill", (d) => color(d.name))
+          .on("mouseover", function(event, d: any) {
+            // Display Pokemon data from dataset
+            d3.csv("/data/pokmeon_competitive.csv").then((pokemonData) => {
+              const pokemon = pokemonData.find((p) => p.name === d.name);
+              
+              if (pokemon) {
+                tooltip.transition()
+                  .duration(300)
+                  .style("opacity", 0.9);
+
+                tooltip.html(`
+                  <strong>Type:</strong> ${pokemon.type1}${pokemon.type2 !== "No_type" ? " / " + pokemon.type2 : ""}<br/>
+                  <strong>HP:</strong> ${pokemon.hp}<br/>
+                  <strong>ATK:</strong> ${pokemon.attack}<br/>
+                  <strong>DEF:</strong> ${pokemon.defense}<br/>
+                  <strong>SP.ATK:</strong> ${pokemon.sp_atk}<br/>
+                  <strong>SP.DEF:</strong> ${pokemon.sp_def}<br/>
+                  <strong>SPEED:</strong> ${pokemon.speed}
+                `)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 20) + "px");
+              }
+            });
+          })
+          .on("mousemove", function(event) {
+            // Move tooltip with mouse
+            tooltip
+              .style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY - 20) + "px");
+          })
+          .on("mouseout", function() {
+            tooltip.transition()
+              .duration(300)
+              .style("opacity", 0);
+          })
           .transition()
           .duration(800)
           .attr("y", (d) => y(d.usage))
           .attr("height", (d) => y(0) - y(d.usage));
+
         // Usage % labels above bars
         svg
           .selectAll("text.usage-label")
