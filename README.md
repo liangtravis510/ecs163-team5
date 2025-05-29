@@ -1,7 +1,7 @@
 # ECS 163 Final Project
 ## Overview
 
-This project explores the competitive Pokémon battling experience through data visualizations using the martini glass structure. The construction of the file is implemented using **Vite + React + TypeScript*
+This project explores the competitive Pokémon battling experience through data visualizations using the martini glass structure. The construction of the file is implemented using **Vite + React + TypeScript**
 
 ---
 
