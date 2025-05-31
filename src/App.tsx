@@ -10,6 +10,8 @@ import TeamCarousel from "./components/TeamCarousel";
 import TypeChartHeatmap from "./components/TypeChartHeatmap";
 import StatOverview from "./components/StatOverview";
 import UsageBarChart from "./components/UsageBarChart";
+// Team Builder
+import TeamBuilderBarChart from "./components/TeamBuilderAssistant"
 
 function App() {
   return (
@@ -135,7 +137,7 @@ function App() {
           }}
         >
           <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
-            How do stats effect Pokemon Battles
+            How do stats affect Pokemon Battles
           </Typography>
 
           <StatOverview />
@@ -154,6 +156,29 @@ function App() {
           }}
         >
           <UsageBarChart />
+        </Paper>
+      </Container>
+      {/* Team Builder and Type Spread*/}
+      <Container sx={{ mt: 8, maxWidth: "md" }}>
+        <Paper
+          elevation={0}
+          sx={{
+            bgcolor: "#1a1f2c",
+            color: "#c0c0c0",
+            p: 3,
+            border: "px solid #333",
+            borderRadius: "8px",
+          }}
+        >
+          <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
+            Team Builder Asssistant: Net Weaknesses and Resistances
+          </Typography>
+          <Typography variant="body1">
+            Use the search box to add your favorite Pokémon to your team! The weakness and resistance calculator will show you what types you're weak and strong against!
+          </Typography>
+
+          {/* Your TeamBuilderBarChart component goes here */}
+          <TeamBuilderBarChart />
         </Paper>
       </Container>
     </Box>
