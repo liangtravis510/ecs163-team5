@@ -7,15 +7,12 @@ import {
   Paper,
 } from "@mui/material";
 import TeamCarousel from "./components/TeamCarousel";
+import TypeDistribution from "./components/TypeDistribution";
 import TypeChartHeatmap from "./components/TypeChartHeatmap";
 import StatOverview from "./components/StatOverview";
-<<<<<<< Updated upstream
-import UsageBarChart from "./components/UsageBarChart";
-=======
-// import UsageBarChart from "./components/UsageBarChart";
+///import RadarChart from "./components/RadarChart";
 import StreamChart from "./components/StreamChart";
 import TeamBuilderBarChart from "./components/TeamBuilderAssistant";
->>>>>>> Stashed changes
 
 function App() {
   return (
@@ -63,6 +60,30 @@ function App() {
             different Pokemon with different types, abilities and roles.
           </Typography>
           <TeamCarousel />
+        </Paper>
+      </Container>
+
+      {/* Type Distribution Bar Chart */}
+      <Container sx={{ mt: 8, maxWidth: "md" }}>
+        <Paper
+          elevation={0}
+          sx={{
+            bgcolor: "#1a1f2c",
+            color: "#c0c0c0",
+            p: 3,
+            border: "px solid #333",
+            borderRadius: "8px",
+          }}
+        >
+          <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
+            Pokémon Types
+          </Typography>
+          <Typography variant="body1">
+            Pokémon have primary and secondary types. This visualization shows
+            the distribution of Pokémon by their primary types, with stacks
+            representing their secondary types.
+          </Typography>
+          <TypeDistribution />
         </Paper>
       </Container>
 
@@ -141,21 +162,14 @@ function App() {
           }}
         >
           <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
-            How do stats effect Pokemon Battles
+            How do stats affect Pokemon Battles
           </Typography>
 
           <StatOverview />
         </Paper>
       </Container>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      {/* Usage Bar Chart*/}
-=======
-=======
->>>>>>> Stashed changes
       {/* Usage Stream Chart*/}
->>>>>>> Stashed changes
       <Container maxWidth={false} sx={{ mt: 8, px: 4 }}>
         <Paper
           elevation={0}
@@ -166,9 +180,6 @@ function App() {
             borderRadius: "8px",
           }}
         >
-<<<<<<< Updated upstream
-          <UsageBarChart />
-=======
           <StreamChart />
         </Paper>
       </Container>
@@ -196,7 +207,6 @@ function App() {
 
           {/* Your TeamBuilderBarChart component goes here */}
           <TeamBuilderBarChart />
->>>>>>> Stashed changes
         </Paper>
       </Container>
     </Box>

@@ -145,3 +145,92 @@ export const typeChart: Record<string, Record<string, number>> = {
     Steel: 0.5,
   },
 };
+
+// add from shaoke
+const spriteNameMap: Record<string, string> = {
+  // From original spriteNameMap
+  "mewtwo-mega-x": "mewtwo-megax",
+  "mewtwo-mega-y": "mewtwo-megay",
+  "charizard-mega-x": "charizard-megax",
+  "charizard-mega-y": "charizard-megay",
+  "necrozma-dawn-wings": "necrozma-dawnwings",
+  "necrozma-dusk-mane": "necrozma-duskmane",
+  "keldeo-ordinary": "keldeo",
+  "wormadam-plant": "wormadam",
+  "wormadam-sandy": "wormadam-sandy",
+  "wormadam-trash": "wormadam-trash",
+
+  // From showdownNameMap
+  "calyrex-shadow-rider": "calyrex-shadow",
+  "calyrex-ice-rider": "calyrex-ice",
+  "zacian-crowned": "zacian-crowned",
+  "zamazenta-crowned": "zamazenta-crowned",
+  "urshifu-rapid-strike": "urshifu-rapid-strike",
+  "flutter mane": "fluttermane",
+  "chien-pao": "chienpao",
+  "samurott-hisui": "samurott-hisui",
+  "landorus-therian": "landorus-therian",
+  "landorus-incarnate": "landorus",
+  "flutter-mane": "fluttermane",
+  "tornadus-incarnate": "tornadus",
+  "thundurus-incarnate": "thundurus",
+  "raging-bolt": "ragingbolt",
+  "urshifu-rapid": "urshifu-rapidstrike",
+  "urshifu-single": "urshifu",
+  "indeedee-female": "indeedee-f",
+  "chi-yu": "chiyu",
+  "iron-hands": "ironhands",
+  "roaring-moon": "roaringmoon",
+  "iron-bundle": "ironbundle",
+  "ting-lu": "tinglu",
+  "tatsugiri-curly": "tatsugiri",
+};
+export const formatName = (name: string): string => {
+  const normalized =
+    spriteNameMap[name] || name.replace(/[^a-z0-9-]/g, "");
+  const spriteURL = `https://play.pokemonshowdown.com/sprites/gen5/${normalized}.png`;
+  return spriteURL;
+};
+
+export type TournamentType = "Smogon" | "Worlds";
+export const tournaments = {
+  "Worlds" : {
+    "years": [2022, 2023, 2024]
+  },
+  "Smogon" : { 
+    "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+  }
+};
+
+export const typeColors: Record<string, string> = {
+  normal: "#A8A878",
+  fire: "#F08030",
+  water: "#6890F0",
+  electric: "#F8D030",
+  grass: "#78C850",
+  ice: "#98D8D8",
+  fighting: "#C03028",
+  poison: "#A040A0",
+  ground: "#E0C068",
+  flying: "#A890F0",
+  psychic: "#F85888",
+  bug: "#A8B820",
+  rock: "#B8A038",
+  ghost: "#705898",
+  dragon: "#7038F8",
+  dark: "#705848",
+  steel: "#B8B8D0",
+  fairy: "#EE99AC",
+};
+
+export const generations = [
+  "generation-i",  
+  "generation-ii",  
+  "generation-iii",  
+  "generation-iv",   
+  "generation-v",   
+  "generation-vi",  
+  "generation-vii", 
+  "generation-viii", 
+  "generation-ix"
+];
