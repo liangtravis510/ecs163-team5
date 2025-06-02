@@ -9,7 +9,13 @@ import {
 import TeamCarousel from "./components/TeamCarousel";
 import TypeChartHeatmap from "./components/TypeChartHeatmap";
 import StatOverview from "./components/StatOverview";
+<<<<<<< Updated upstream
 import UsageBarChart from "./components/UsageBarChart";
+=======
+// import UsageBarChart from "./components/UsageBarChart";
+import StreamChart from "./components/StreamChart";
+import TeamBuilderBarChart from "./components/TeamBuilderAssistant";
+>>>>>>> Stashed changes
 
 function App() {
   return (
@@ -143,8 +149,11 @@ function App() {
       </Container>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       {/* Usage Bar Chart*/}
 =======
+=======
+>>>>>>> Stashed changes
       {/* Usage Stream Chart*/}
 >>>>>>> Stashed changes
       <Container maxWidth={false} sx={{ mt: 8, px: 4 }}>
