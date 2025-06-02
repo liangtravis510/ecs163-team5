@@ -12,60 +12,9 @@ import {
   Select,
 } from "@mui/material";
 
-const spriteNameMap: Record<string, string> = {
-  // From original spriteNameMap
-  "mewtwo-mega-x": "mewtwo-megax",
-  "mewtwo-mega-y": "mewtwo-megay",
-  "charizard-mega-x": "charizard-megax",
-  "charizard-mega-y": "charizard-megay",
-  "necrozma-dawn-wings": "necrozma-dawnwings",
-  "necrozma-dusk-mane": "necrozma-duskmane",
-  "keldeo-ordinary": "keldeo",
-  "wormadam-plant": "wormadam",
-  "wormadam-sandy": "wormadam-sandy",
-  "wormadam-trash": "wormadam-trash",
+import {formatName,  tournaments} from "../utils/typeChart";
+import type {TournamentType} from "../utils/typeChart";
 
-  // From showdownNameMap
-  "calyrex-shadow-rider": "calyrex-shadow",
-  "calyrex-ice-rider": "calyrex-ice",
-  "zacian-crowned": "zacian-crowned",
-  "zamazenta-crowned": "zamazenta-crowned",
-  "urshifu-rapid-strike": "urshifu-rapid-strike",
-  "flutter mane": "fluttermane",
-  "chien-pao": "chienpao",
-  "samurott-hisui": "samurott-hisui",
-  "landorus-therian": "landorus-therian",
-  "landorus-incarnate": "landorus",
-  "flutter-mane": "fluttermane",
-  "tornadus-incarnate": "tornadus",
-  "thundurus-incarnate": "thundurus",
-  "raging-bolt": "ragingbolt",
-  "urshifu-rapid": "urshifu-rapidstrike",
-  "urshifu-single": "urshifu",
-  "indeedee-female": "indeedee-f",
-  "chi-yu": "chiyu",
-  "iron-hands": "ironhands",
-  "roaring-moon": "roaringmoon",
-  "iron-bundle": "ironbundle",
-  "ting-lu": "tinglu",
-  "tatsugiri-curly": "tatsugiri",
-};
-const formatName = (name: string): string => {
-  const normalized =
-    spriteNameMap[name] || name.replace(/[^a-z0-9-]/g, "");
-  const spriteURL = `https://play.pokemonshowdown.com/sprites/gen5/${normalized}.png`;
-  return spriteURL;
-};
-
-type TournamentType = "Smogon" | "Worlds";
-const tournaments = {
-  "Worlds" : {
-    "years": [2022, 2023, 2024]
-  },
-  "Smogon" : { 
-    "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
-  }
-};
 export default function RadarChart() {
   const svgRef = useRef<SVGSVGElement>(null);
   const [year, setYear] = useState<number>(2024);
@@ -84,9 +33,10 @@ export default function RadarChart() {
           (d) => d.year === year && d.format === format
         );
     const svg = d3.select(svgRef.current);
-	svg.selectAll("*").remove();
+	  svg.selectAll("*").remove();
     const container = svgRef.current?.parentElement;
     const width = container ? container.clientWidth : 800;
+    const height = container ? container.clientHeight : 800;
     let radarMargin = { top: 10, right: 30, bottom: 60, left: 60 },
 		radarWidth = width - 100,
 		radarHeight = 400;
@@ -103,7 +53,8 @@ export default function RadarChart() {
 			.attr("transform", `translate(${radarMargin.left}, ${radarMargin.top + 20})`);
 
 		const radarGroup = svg.append("g")
-			.attr("transform", "translate(250,250)");
+			.attr("transform", `translate(${width / 2}, ${height / 2})`)
+      .attr("x", width * 3 / 10);
 	
 		const angleSlice = (2 * Math.PI) / attributes.length;
 		const levels = 4;
@@ -174,7 +125,7 @@ export default function RadarChart() {
 			const text1 = poke1["name"] + "(" + usage1 + "%)";
 			const text2 = poke1["name"] + "(" + usage2 + "%)";
 			g1.append("text")
-			.attr("x", 100)
+			.attr("x", width * 3 / 10)
 			.attr("y", 10)
 			.attr("text-anchor", "middle")
 			.attr("font-size", "18px")
@@ -183,7 +134,7 @@ export default function RadarChart() {
 			.text(text1);
 
 			g1.append("text")
-			.attr("x", 100 + text1.length * 8)
+			.attr("x", width * 3 / 10 + text1.length * 8)
 			.attr("y", 10)
 			.attr("text-anchor", "middle")
 			.attr("font-size", "18px")
@@ -191,7 +142,7 @@ export default function RadarChart() {
 			.text("VS ");
 
 			g1.append("text")
-			.attr("x", 100 + text1.length * 16 + 10)
+			.attr("x", width * 3 / 10 + text1.length * 16 + 10)
 			.attr("y", 10)
 			.attr("text-anchor", "middle")
 			.attr("font-size", "18px")
@@ -201,12 +152,12 @@ export default function RadarChart() {
 
 			imageGroup.append("image")
             .attr("xlink:href", formatName(poke1["name"]))
-			.attr("x", 20)
+			.attr("x", width * 3 / 10 - 40)
 			.attr("y", 0)
 
 			imageGroup.append("image")
             .attr("xlink:href", formatName(poke2["name"]))
-			.attr("x", 40 + text1.length * 16)
+			.attr("x", width * 3 / 10 - 40 + text1.length * 16)
 			.attr("y", 0)
 		}
 		updateRadar();
