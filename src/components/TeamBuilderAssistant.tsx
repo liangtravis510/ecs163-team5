@@ -50,6 +50,9 @@ function getShowdownSpriteName(name: string): string {
     "wormadam-plant": "wormadam",
     "wormadam-sandy": "wormadam-sandy",
     "wormadam-trash": "wormadam-trash",
+
+
+    // From showdownNameMap
     "calyrex-shadow-rider": "calyrex-shadow",
     "calyrex-ice-rider": "calyrex-ice",
     "zacian-crowned": "zacian-crowned",
@@ -73,6 +76,111 @@ function getShowdownSpriteName(name: string): string {
     "iron-bundle": "ironbundle",
     "ting-lu": "tinglu",
     "tatsugiri-curly": "tatsugiri",
+
+    // more edits to pngs
+    "squawkabilly-yellow-plumage": "squawkabilly-yellow",
+    "squawkabilly-blue-plumage": "squawkabilly-blue",
+    "squawkabilly-green-plumage": "squawkabilly",
+    squawkabilly: "squawkabilly-white",
+    "maushold-three": "maushold",
+    "dudunsparce-two-segment": "dudunsparce",
+    "gumshoos-totem": "gumshoos",
+    "meloetta-aria": "meloetta",
+    "porygon-z": "porygonz",
+    "marowak-totem": "marowak",
+    "iron-moth": "ironmoth",
+    "gouging-fire": "gougingfire",
+    "basculin-blue-striped": "basculin-bluestriped",
+    "basculin-white-striped": "basculin-whitestriped",
+    "greninja-battle-bond": "greninja",
+    "araquanid-totem": "araquanid",
+    "tapu-fini": "tapufini",
+    "basculegion-male": "basculegion",
+    "basculegion-female": "basculegion-f",
+    "palafin-zero": "palafin-hero",
+    "walking-wake": "walkingwake",
+    "ho-oh": "hooh",
+    "pikachu-rock-star": "pikachu-rockstar",
+    "pikachu-pop-star": "pikachu-popstar",
+    "pikachu-original-cap": "pikachu-original",
+    "pikachu-hoenn-cap": "pikachu-hoenn",
+    "pikachu-sinnoh-cap": "pikachu-sinnoh",
+    "pikachu-unova-cap": "pikachu-unova",
+    "pikachu-kalos-cap": "pikachu-kalos",
+    "pikachu-alola-cap": "pikachu-alola",
+    "pikachu-partner-cap": "pikachu-partner",
+    "pikachu-world-cap": "pikachu-world",
+    "oricorio-pom-pom": "oricorio",
+    "togedemaru-totem": "togedemaru",
+    "tapu-koko": "tapukoko",
+    "tapu-bulu": "tapubulu",
+    "tapu-lele": "tapulele",
+    "toxtricity-amped": "toxtricity",
+    "toxtricity-low-key": "toxtricity-lowkey",
+    "toxtricity-amped-gmax": "toxtricity-gmax",
+    "toxtricity-low-key-gmax":
+      "https://archives.bulbagarden.net/media/upload/thumb/a/a9/HOME0849Gi.png/200px-HOME0849Gi.png",
+    "sandy-shocks": "sandyshocks",
+    "miraidon-low-power-mode": "miraidon",
+    "miraidon-drive-mode": "miraidon",
+    "miraidon-aquatic-mode": "miraidon",
+    "miraidon-glide-mode": "miraidon",
+    "morpeko-full-belly": "morpeko",
+    morpeko: "morpeko-hangry",
+    "shaymin-land": "shaymin",
+    "lurantis-totem": "lurantis",
+    "ogerpon-teal": "ogerpon",
+    "brute-bonnet": "brutebonnet",
+    "iron-leaves": "ironleaves",
+    "mr-mime-galar": "mrmime-galar",
+    "darmanitan-galar-zen": "darmanitan-galarzen",
+    "mr-rime": "mrrime",
+    "tauros-paldea-combat": "tauros-paldeacombat",
+    "tauros-paldea-blaze": "tauros-paldeablaze",
+    "tauros-paldea-aqua": "tauros-paldeaaqua",
+    "koraidon-limited-build": "koraidon",
+    "koraidon-sprinting-build": "koraidon",
+    "koraidon-swimming-build": "koraidon",
+    "koraidon-gliding-build": "koraidon",
+    "urshifu-single-strike-gmax": "urshifu-gmax",
+    "urshifu-rapid-strike-gmax": "urshifu-rapidstrikegmax",
+    "salazzle-totem": "salazzle",
+    "great-tusk": "greattusk",
+    "iron-treads": "irontreads",
+    "mr-mime": "mrmime",
+    "deoxys-normal": "deoxys",
+    "mime-jr": "mimejr",
+    "meowstic-male": "meowstic",
+    "meowstic-female": "meowstic-f",
+    "indeedee-male": "indeedee",
+    "ribombee-totem": "ribombee",
+    "vikavolt-totem": "vikavolt",
+    "slither-wing": "slitherwing",
+    "rockruff-own-tempo": "rockruff",
+    "minior-orange-meteor": "minior-meteor",
+    "minior-yellow-meteor": "minior-meteor",
+    "minior-green-meteor": "minior-meteor",
+    "minior-blue-meteor": "minior-meteor",
+    "minior-indigo-meteor": "minior-meteor",
+    "minior-violet-meteor": "minior-meteor",
+    "iron-thorns": "ironthorns",
+    "iron-boulder": "ironboulder",
+    "mimikyu-totem-disguised": "mimikyu",
+    "mimikyu-totem-busted": "mimikyu-busted",
+    "zygarde-50": "zygarde",
+    "zygarde-10%-power-construct": "zygarde-10",
+    "zygarde-50%-power-construct": "zygarde",
+    "hakamo-o": "hakamoo",
+    "kommo-o": "kommoo",
+    "kommo-o-totem": "kommoo",
+    zygarde: "zygarde-complete",
+    "iron-jugulis": "ironjugulis",
+    "wo-chien": "wochien",
+    "iron-crown": "ironcrown",
+    "scream-tail": "screamtail",
+    "iron-valiant": "ironvaliant",
+    "enamorus-incarnate": "enamorus",
+    "type-null": "typenull",
   };
   const rawName = name.toLowerCase();
   return spriteNameMap[rawName] || rawName.replace(/[^a-z0-9-]/g, "");
@@ -165,13 +273,18 @@ export default function TeamBuilderBarChart() {
   // Load CSV on mount
   useEffect(() => {
     d3.csv("/data/pokmeon_competitive.csv").then((data) => {
-      // Map each row to Pokemon interface, explicitly typing and transforming if needed
-      const parsedData: Pokemon[] = data.map((row) => ({
-        name: row.name || "",
-        type1: fixTypeCapitalization(row.type1),
-        type2: fixTypeCapitalization(row.type2 || "No_type"),
-        // add other fields if needed
-      }));
+      const parsedData: Pokemon[] = data
+        .map((row) => ({
+          name: row.name || "",
+          type1: fixTypeCapitalization(row.type1),
+          type2: fixTypeCapitalization(row.type2 || "No_type"),
+        }))
+        .filter(
+          (p) =>
+            !p.name.includes("zygarde-10%-power-construct") &&
+            !p.name.includes("zygarde-50%-power-construct") &&
+            !p.name.includes("-totem")
+        );
       setPokemonData(parsedData);
     });
   }, []);
@@ -605,7 +718,7 @@ export default function TeamBuilderBarChart() {
           size="small"
           sx={{ marginBottom: 1 }}
         >
-          {isSorted ? "Default Sort" : "Sort by Net Weakness"}
+          {isSorted ? "Switch to Default Sort" : "Switch to Sort by Net Weakness"}
         </Button>
 
         <svg

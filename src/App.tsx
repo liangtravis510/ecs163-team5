@@ -170,7 +170,12 @@ function App() {
       </Container>
 
       {/* Usage Stream Chart*/}
-      <Container maxWidth={false} sx={{ mt: 8, px: 4 }}>
+      <Container
+        maxWidth={false}
+        sx={{ mt: 8, px: 4, maxWidth: "1200px", mx: "auto" }}
+      >
+
+
         <Paper
           elevation={0}
           sx={{

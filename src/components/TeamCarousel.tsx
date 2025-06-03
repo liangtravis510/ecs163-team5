@@ -27,7 +27,7 @@ const teams: PokemonTeam[] = [
   ], //Team US Midwest – kythr’s Finals Team
 ];
 
-// ✅ Map display names to showdown sprite format
+// Map display names to showdown sprite format
 const showdownNameMap: Record<string, string> = {
   "calyrex-shadow": "calyrex-shadow",
   "zacian-crowned": "zacian-crowned",
@@ -53,7 +53,7 @@ export default function TeamCarousel() {
 
   const max = teams.length - 1;
 
-  // ✅ Preload images
+  // Preload images
   useEffect(() => {
     const allPokemon = new Set(teams.flat());
     allPokemon.forEach((name) => {
@@ -62,7 +62,7 @@ export default function TeamCarousel() {
     });
   }, []);
 
-  // ✅ Smooth transition handler
+  // Smooth transition handler
   const changeTeam = (newIndex: number) => {
     setFade(false); // fade out
     setTimeout(() => {
