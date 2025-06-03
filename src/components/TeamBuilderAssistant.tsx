@@ -51,7 +51,6 @@ function getShowdownSpriteName(name: string): string {
     "wormadam-sandy": "wormadam-sandy",
     "wormadam-trash": "wormadam-trash",
 
-
     // From showdownNameMap
     "calyrex-shadow-rider": "calyrex-shadow",
     "calyrex-ice-rider": "calyrex-ice",
@@ -285,6 +284,7 @@ export default function TeamBuilderBarChart() {
             !p.name.includes("zygarde-50%-power-construct") &&
             !p.name.includes("-totem")
         );
+
       setPokemonData(parsedData);
     });
   }, []);
@@ -718,7 +718,9 @@ export default function TeamBuilderBarChart() {
           size="small"
           sx={{ marginBottom: 1 }}
         >
-          {isSorted ? "Switch to Default Sort" : "Switch to Sort by Net Weakness"}
+          {isSorted
+            ? "Switch to Default Sort"
+            : "Switch to Sort by Net Weakness"}
         </Button>
 
         <svg
