@@ -7,11 +7,12 @@ import {
   Paper,
 } from "@mui/material";
 import TeamCarousel from "./components/TeamCarousel";
+import TypeDistribution from "./components/TypeDistribution";
 import TypeChartHeatmap from "./components/TypeChartHeatmap";
 import StatOverview from "./components/StatOverview";
-import UsageBarChart from "./components/UsageBarChart";
-// Team Builder
-import TeamBuilderBarChart from "./components/TeamBuilderAssistant"
+///import RadarChart from "./components/RadarChart";
+import StreamChart from "./components/StreamChart";
+import TeamBuilderBarChart from "./components/TeamBuilderAssistant";
 
 function App() {
   return (
@@ -59,6 +60,30 @@ function App() {
             different Pokemon with different types, abilities and roles.
           </Typography>
           <TeamCarousel />
+        </Paper>
+      </Container>
+
+      {/* Type Distribution Bar Chart */}
+      <Container sx={{ mt: 8, maxWidth: "md" }}>
+        <Paper
+          elevation={0}
+          sx={{
+            bgcolor: "#1a1f2c",
+            color: "#c0c0c0",
+            p: 3,
+            border: "px solid #333",
+            borderRadius: "8px",
+          }}
+        >
+          <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
+            Pokémon Types
+          </Typography>
+          <Typography variant="body1">
+            Pokémon have primary and secondary types. This visualization shows
+            the distribution of Pokémon by their primary types, with stacks
+            representing their secondary types.
+          </Typography>
+          <TypeDistribution />
         </Paper>
       </Container>
 
@@ -144,8 +169,12 @@ function App() {
         </Paper>
       </Container>
 
-      {/* Usage Bar Chart*/}
-      <Container maxWidth={false} sx={{ mt: 8, px: 4 }}>
+      {/* Usage Stream Chart*/}
+      <Container
+        maxWidth={false}
+        sx={{ mt: 8, px: 4, maxWidth: "1200px", mx: "auto" }}
+      >
+
         <Paper
           elevation={0}
           sx={{
@@ -155,9 +184,10 @@ function App() {
             borderRadius: "8px",
           }}
         >
-          <UsageBarChart />
+          <StreamChart />
         </Paper>
       </Container>
+
       {/* Team Builder and Type Spread*/}
       <Container sx={{ mt: 8, maxWidth: "md" }}>
         <Paper
@@ -174,7 +204,10 @@ function App() {
             Team Builder Asssistant: Net Weaknesses and Resistances
           </Typography>
           <Typography variant="body1">
-            Use the search box to add your favorite Pokémon to your team! The weakness and resistance calculator will show you what types you're weak and strong against!
+            Use the search box to add your favorite Pokémon to your team! The
+            weakness and resistance calculator will show you what types you're
+            weak and strong against!
+
           </Typography>
 
           {/* Your TeamBuilderBarChart component goes here */}
