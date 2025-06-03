@@ -50,7 +50,7 @@ const getSpriteUrl = (name: string): string =>
 export default function TeamCarousel() {
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
-
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const max = teams.length - 1;
 
   // Preload images
@@ -64,11 +64,19 @@ export default function TeamCarousel() {
 
   // Smooth transition handler
   const changeTeam = (newIndex: number) => {
+    // Return if currently transitioning
+    if (isTransitioning || newIndex === index) return;
+    // Start transition
+    setIsTransitioning(true);
     setFade(false); // fade out
     setTimeout(() => {
       setIndex(newIndex); // switch team
       setFade(true); // fade in
-    }, 150); // match transition duration
+      setTimeout(() => {
+        // End transition
+        setIsTransitioning(false);
+      }, 300);
+    }, 200);
   };
 
   return (
@@ -82,7 +90,8 @@ export default function TeamCarousel() {
           mb: 2,
           flexWrap: "wrap",
           opacity: fade ? 1 : 0,
-          transition: "opacity 150ms ease-in-out",
+          transition: "opacity 200ms ease-in-out",
+          height: "90px",
         }}
       >
         {teams[index].map((name) => (
@@ -110,6 +119,7 @@ export default function TeamCarousel() {
           onClick={() => changeTeam(index - 1)}
           disabled={index === 0}
           color="primary"
+          sx={{ opacity: index === 0 ? 0.5 : 1 }}
         >
           <ArrowBackIos />
         </IconButton>

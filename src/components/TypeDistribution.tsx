@@ -194,8 +194,8 @@ export default function TypeDistribution() {
       const legendItemHeight = 18;
       const legendItemWidth = 100;
       const legendCols = 2;
-      const legendX = width - legendItemWidth * legendCols + 100;
-      const legendY = 0;
+      const legendX = width - legendItemWidth * legendCols + 115;
+      const legendY = 20;
       const legendTitleHeight = 25;
 
       g.append("rect")
@@ -212,8 +212,8 @@ export default function TypeDistribution() {
         .attr("rx", 6);
 
       g.append("text")
-        .attr("x", legendX + (legendItemWidth * legendCols) / 2 - 10)
-        .attr("y", legendY - 5)
+        .attr("x", legendX + (legendItemWidth * legendCols) / 2 - 30)
+        .attr("y", legendY - 10)
         .attr("text-anchor", "middle")
         .style("fill", "white")
         .style("font-size", "12px")
@@ -274,9 +274,9 @@ export default function TypeDistribution() {
       {activePrimary && activeSecondaryView && (
         <Box sx={{ mt: 4, px: 4 }}>
           <Typography variant="h6" align="center" gutterBottom>
-            Pokémon with Primary Type: {activePrimary}
+            Pokémon with Primary Type: {activePrimary.charAt(0).toUpperCase() + activePrimary.slice(1)}
             {selectedSecondary
-              ? ` and Secondary Type: ${selectedSecondary}`
+              ? ` and Secondary Type: ${selectedSecondary.charAt(0).toUpperCase() + selectedSecondary.slice(1)}`
               : ""}
           </Typography>
           <Box sx={{ mt: 2, textAlign: "center" }}>

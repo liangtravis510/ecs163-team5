@@ -32,7 +32,7 @@ function App() {
       {/* Hero Section */}
       <Container sx={{ textAlign: "center", mt: 8 }}>
         <Typography variant="h4" gutterBottom>
-          Pokémon battling in Smogon/VCG Worlds
+          Pokémon Battling in Smogon/VGC Worlds
         </Typography>
         <Typography variant="h5" gutterBottom>
           A Data Visualization
@@ -56,8 +56,8 @@ function App() {
             Build A Team
           </Typography>
           <Typography variant="body1">
-            In competitive pokemon, a player is in charge of selecting 6
-            different Pokemon with different types, abilities and roles.
+            In competitive Pokémon, a player is in charge of selecting 6
+            different Pokémon with different types, abilities, and roles.
           </Typography>
           <TeamCarousel />
         </Paper>
@@ -79,9 +79,10 @@ function App() {
             Pokémon Types
           </Typography>
           <Typography variant="body1">
-            Pokémon have primary and secondary types. This visualization shows
-            the distribution of Pokémon by their primary types, with stacks
-            representing their secondary types.
+            Pokémon have primary and secondary types. This visualization
+            shows the distribution of Pokémon by their primary type. Click
+            the bars to view the distribution of secondary types, as well 
+            as Pokémon with matching primary and secondary types.
           </Typography>
           <TypeDistribution />
         </Paper>
@@ -100,15 +101,15 @@ function App() {
           }}
         >
           <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
-            Typing Advantages/Disadvantages
+            Typing Advantages and Disadvantages
           </Typography>
           <Typography variant="body1">
-            With every combination of pokemon types comes strengths and
-            weaknesses. Some grant immunity to certain type moves, others
-            provide significantly larger advantages/disadvantages but it is up
+            With every combination of Pokémon types comes strengths and
+            weaknesses. Some grant immunity to certain type moves, while others
+            provide significantly larger advantages and disadvantages. It is up
             to the trainer to find the best way to navigate certain
-            weaknesses/strengths. Below shows examples of type combinations and
-            their weakness/advantages based on certain typing of their attacks.
+            weaknesses and strengths. Below shows examples of type combinations and
+            their weakness and advantages based on certain typing of their attacks.
           </Typography>
           <TypeChartHeatmap />
           <Box
@@ -125,7 +126,7 @@ function App() {
               { label: "Not Very Effective (½×)", color: "#4a90e2" },
               { label: "Effective (1×)", color: "#fff", border: "#ccc" },
               { label: "Super Effective (2×)", color: "pink" },
-              { label: "Double Weak (4×)", color: "#ff2222" },
+              { label: "Double Effective (4×)", color: "#ff2222" },
             ].map(({ label, color, border }) => (
               <Box
                 key={label}
@@ -162,9 +163,13 @@ function App() {
           }}
         >
           <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
-            How do stats affect Pokemon Battles
+            How Do Stats Affect Pokemon Battles?
           </Typography>
-
+          <Typography variant="body1">
+            Each Pokémon has six stats: HP, Attack, Defense, Special Attack,
+            Special Defense, and Speed. These stats determine how well a
+            Pokémon performs in battles.
+          </Typography>
           <StatOverview />
         </Paper>
       </Container>
@@ -182,7 +187,16 @@ function App() {
             p: 4, // more padding for breathing room
             borderRadius: "8px",
           }}
-        >
+        > 
+          <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
+            How Has Usage Changed Over Time?
+          </Typography>
+          <Typography variant="body1">
+            Competitive Pokémon usage trends evolve with each generation's 
+            differences. The following streamgraph demonstrates trends of
+            using different Pokémon types throughout the generations, for
+            a given format and year.
+          </Typography>
           <StreamChart />
         </Paper>
       </Container>

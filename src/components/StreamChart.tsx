@@ -281,7 +281,7 @@ export default function StreamChart() {
         }}
       >
         <Typography variant="h5" align="center" gutterBottom sx={{ mb: 2 }}>
-          Usage of Pokémon Generation ({format}, {year})
+          Usage of Pokémon Types by Generation ({format}, {year})
         </Typography>
 
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 2 }}>

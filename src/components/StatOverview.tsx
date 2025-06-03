@@ -9,27 +9,27 @@ import {
 } from "@mui/material";
 
 const statDescriptions: Record<string, string> = {
-  hp: "HP (<strong>Hit Points</strong>) determines how much damage a Pokémon can take before fainting. ",
+  hp: "HP (<strong>Hit Points</strong>) determines how much damage a Pokémon can take before fainting.",
   attack: "Attack affects the power of <strong>physical moves</strong>.",
-  defense: "Defense reduces damage from <strong>physical moves</strong>.  ",
-  sp_atk: "Special Attack powers up <strong>special moves</strong>",
+  defense: "Defense reduces damage from <strong>physical moves</strong>.",
+  sp_atk: "Special Attack powers up <strong>special moves</strong>.",
   sp_def: "Special Defense reduces damage from <strong>special moves</strong>.",
   speed:
     "Speed determines which Pokémon <strong>moves first</strong> each turn.",
 };
 
 const statTakeaways: Record<string, string> = {
-  hp: "Bulky Pokémon with high HP are useful for stalling and tanking hits. Outliers like Blissey are specialize in their defensive role ",
+  hp: "Bulky Pokémon with high HP are useful for stalling and tanking hits. Outliers like Blissey are specialize in their defensive role.",
   attack:
-    "High Attack stats are key for physical sweepers and wallbreakers. Pokémon such as Mega Garchomp make for very good sweepers with an attack stat of 170",
+    "High Attack stats are key for physical sweepers and wallbreakers. Pokémon such as Mega Garchomp make for very good sweepers with an attack stat of 170.",
   defense:
-    "Physically defensive Pokémon serve as walls against strong physical attackers. Great for pivoting and support roles. Mega Steelix exiles at this with its staggering 230 defense making it a great waller against physical teams",
+    "Physically defensive Pokémon serve as walls against strong physical attackers. Great for pivoting and support roles. Mega Steelix exiles at this with its staggering 230 defense making it a great waller against physical teams.",
   sp_atk:
-    "Special Attack enables powerful ranged attacks. Useful for Pokémon like Alakazam which can counter pokemon with high defense but low special defenses",
+    "Special Attack enables powerful ranged attacks. Useful for Pokémon like Alakazam which can counter pokemon with high defense but low special defenses.",
   sp_def:
     "High Special Defense allows Pokémon to counter special sweepers. Examples include Shuckle with a 230 Sp. Def.",
   speed:
-    "Speed controls turn order and tempo. Fast Pokémon like Dragapult or Weavile can take their turn first against slower opponents",
+    "Speed controls turn order and tempo. Fast Pokémon like Dragapult or Weavile can take their turn first against slower opponents.",
 };
 
 const statKeys = Object.keys(statDescriptions);
