@@ -290,6 +290,18 @@ export default function TypeDistribution() {
               ← Go Back
             </Button>
           </Box>
+          <Box sx={{ mt: 3, textAlign: "center" }}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setActivePrimary(null);
+                setActiveSecondaryView(false);
+                setSelectedSecondary(null);
+              }}
+            >
+              ← Back to Overview
+            </Button>
+          </Box>
           <Box
             sx={{
               display: "grid",
@@ -319,18 +331,6 @@ export default function TypeDistribution() {
                   <Typography variant="body2">{p.name}</Typography>
                 </Box>
               ))}
-          </Box>
-          <Box sx={{ mt: 3, textAlign: "center" }}>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setActivePrimary(null);
-                setActiveSecondaryView(false);
-                setSelectedSecondary(null);
-              }}
-            >
-              ← Back to Overview
-            </Button>
           </Box>
         </Box>
       )}
