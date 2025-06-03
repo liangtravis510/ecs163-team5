@@ -175,6 +175,7 @@ function App() {
         sx={{ mt: 8, px: 4, maxWidth: "1200px", mx: "auto" }}
       >
 
+
         <Paper
           elevation={0}
           sx={{
@@ -207,7 +208,6 @@ function App() {
             Use the search box to add your favorite Pokémon to your team! The
             weakness and resistance calculator will show you what types you're
             weak and strong against!
-
           </Typography>
 
           {/* Your TeamBuilderBarChart component goes here */}
