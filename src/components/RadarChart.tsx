@@ -1,274 +1,564 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import * as d3 from "d3";
-import {
-  Box,
-  Typography,
-  ToggleButtonGroup,
-  ToggleButton,
-  Paper,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { csv } from "d3-fetch";
+import TextField from "@mui/material/TextField";
 
-import { formatName, tournaments } from "../utils/typeChart";
-import type { TournamentType } from "../utils/typeChart";
+const statOrder = ["hp", "attack", "defense", "speed", "sp_def", "sp_atk"];
+const axisLabels = ["HP", "Attack", "Defense", "Speed", "Sp. Def", "Sp. Atk"];
+const defaultMax = 160;
+const csvPath = "/data/pokmeon_competitive.csv";
+import pokeball from "../assets/sprites/pokeball.png";
 
-export default function RadarChart() {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [year, setYear] = useState<number>(2024);
-  const [format, setFormat] = useState<TournamentType>("Smogon");
+interface Pokemon {
+  name: string;
+  [key: string]: string | number;
+}
+
+const typeColors: Record<string, string> = {
+  Normal: "#A8A878",
+  Fire: "#F08030",
+  Water: "#6890F0",
+  Electric: "#F8D030",
+  Grass: "#78C850",
+  Ice: "#98D8D8",
+  Fighting: "#C03028",
+  Poison: "#A040A0",
+  Ground: "#E0C068",
+  Flying: "#A890F0",
+  Psychic: "#F85888",
+  Bug: "#A8B820",
+  Rock: "#B8A038",
+  Ghost: "#705898",
+  Dragon: "#7038F8",
+  Dark: "#705848",
+  Steel: "#B8B8D0",
+  Fairy: "#EE99AC",
+  No_type: "#555555",
+};
+
+function getShowdownSpriteName(name: string): string {
+  const spriteNameMap: Record<string, string> = {
+    "mewtwo-mega-x": "mewtwo-megax",
+    "mewtwo-mega-y": "mewtwo-megay",
+    "charizard-mega-x": "charizard-megax",
+    "charizard-mega-y": "charizard-megay",
+    "necrozma-dawn-wings": "necrozma-dawnwings",
+    "necrozma-dusk-mane": "necrozma-duskmane",
+    "keldeo-ordinary": "keldeo",
+    "wormadam-plant": "wormadam",
+    "wormadam-sandy": "wormadam-sandy",
+    "wormadam-trash": "wormadam-trash",
+
+    "calyrex-shadow-rider": "calyrex-shadow",
+    "calyrex-ice-rider": "calyrex-ice",
+    "zacian-crowned": "zacian-crowned",
+    "zamazenta-crowned": "zamazenta-crowned",
+    "urshifu-rapid-strike": "urshifu-rapid-strike",
+    "flutter mane": "fluttermane",
+    "chien-pao": "chienpao",
+    "samurott-hisui": "samurott-hisui",
+    "landorus-therian": "landorus-therian",
+    "landorus-incarnate": "landorus",
+    "flutter-mane": "fluttermane",
+    "tornadus-incarnate": "tornadus",
+    "thundurus-incarnate": "thundurus",
+    "raging-bolt": "ragingbolt",
+    "urshifu-rapid": "urshifu-rapidstrike",
+    "urshifu-single": "urshifu",
+    "indeedee-female": "indeedee-f",
+    "chi-yu": "chiyu",
+    "iron-hands": "ironhands",
+    "roaring-moon": "roaringmoon",
+    "iron-bundle": "ironbundle",
+    "ting-lu": "tinglu",
+    "tatsugiri-curly": "tatsugiri",
+
+    "squawkabilly-yellow-plumage": "squawkabilly-yellow",
+    "squawkabilly-blue-plumage": "squawkabilly-blue",
+    "squawkabilly-green-plumage": "squawkabilly",
+    squawkabilly: "squawkabilly-white",
+    "maushold-three": "maushold",
+    "dudunsparce-two-segment": "dudunsparce",
+    "gumshoos-totem": "gumshoos",
+    "meloetta-aria": "meloetta",
+    "porygon-z": "porygonz",
+    "marowak-totem": "marowak",
+    "iron-moth": "ironmoth",
+    "gouging-fire": "gougingfire",
+    "basculin-blue-striped": "basculin-bluestriped",
+    "basculin-white-striped": "basculin-whitestriped",
+    "greninja-battle-bond": "greninja",
+    "araquanid-totem": "araquanid",
+    "tapu-fini": "tapufini",
+    "basculegion-male": "basculegion",
+    "basculegion-female": "basculegion-f",
+    "palafin-zero": "palafin-hero",
+    "walking-wake": "walkingwake",
+    "ho-oh": "hooh",
+    "pikachu-rock-star": "pikachu-rockstar",
+    "pikachu-pop-star": "pikachu-popstar",
+    "pikachu-original-cap": "pikachu-original",
+    "pikachu-hoenn-cap": "pikachu-hoenn",
+    "pikachu-sinnoh-cap": "pikachu-sinnoh",
+    "pikachu-unova-cap": "pikachu-unova",
+    "pikachu-kalos-cap": "pikachu-kalos",
+    "pikachu-alola-cap": "pikachu-alola",
+    "pikachu-partner-cap": "pikachu-partner",
+    "pikachu-world-cap": "pikachu-world",
+    "oricorio-pom-pom": "oricorio",
+    "togedemaru-totem": "togedemaru",
+    "tapu-koko": "tapukoko",
+    "tapu-bulu": "tapubulu",
+    "tapu-lele": "tapulele",
+    "toxtricity-amped": "toxtricity",
+    "toxtricity-low-key": "toxtricity-lowkey",
+    "toxtricity-amped-gmax": "toxtricity-gmax",
+    "toxtricity-low-key-gmax":
+      "https://archives.bulbagarden.net/media/upload/thumb/a/a9/HOME0849Gi.png/200px-HOME0849Gi.png",
+    "sandy-shocks": "sandyshocks",
+    "miraidon-low-power-mode": "miraidon",
+    "miraidon-drive-mode": "miraidon",
+    "miraidon-aquatic-mode": "miraidon",
+    "miraidon-glide-mode": "miraidon",
+    "morpeko-full-belly": "morpeko",
+    morpeko: "morpeko-hangry",
+    "shaymin-land": "shaymin",
+    "lurantis-totem": "lurantis",
+    "ogerpon-teal": "ogerpon",
+    "brute-bonnet": "brutebonnet",
+    "iron-leaves": "ironleaves",
+    "mr-mime-galar": "mrmime-galar",
+    "darmanitan-galar-zen": "darmanitan-galarzen",
+    "mr-rime": "mrrime",
+    "tauros-paldea-combat": "tauros-paldeacombat",
+    "tauros-paldea-blaze": "tauros-paldeablaze",
+    "tauros-paldea-aqua": "tauros-paldeaaqua",
+    "koraidon-limited-build": "koraidon",
+    "koraidon-sprinting-build": "koraidon",
+    "koraidon-swimming-build": "koraidon",
+    "koraidon-gliding-build": "koraidon",
+    "urshifu-single-strike-gmax": "urshifu-gmax",
+    "urshifu-rapid-strike-gmax": "urshifu-rapidstrikegmax",
+    "salazzle-totem": "salazzle",
+    "great-tusk": "greattusk",
+    "iron-treads": "irontreads",
+    "mr-mime": "mrmime",
+    "deoxys-normal": "deoxys",
+    "mime-jr": "mimejr",
+    "meowstic-male": "meowstic",
+    "meowstic-female": "meowstic-f",
+    "indeedee-male": "indeedee",
+    "ribombee-totem": "ribombee",
+    "vikavolt-totem": "vikavolt",
+    "slither-wing": "slitherwing",
+    "rockruff-own-tempo": "rockruff",
+    "minior-orange-meteor": "minior-meteor",
+    "minior-yellow-meteor": "minior-meteor",
+    "minior-green-meteor": "minior-meteor",
+    "minior-blue-meteor": "minior-meteor",
+    "minior-indigo-meteor": "minior-meteor",
+    "minior-violet-meteor": "minior-meteor",
+    "iron-thorns": "ironthorns",
+    "iron-boulder": "ironboulder",
+    "mimikyu-totem-disguised": "mimikyu",
+    "mimikyu-totem-busted": "mimikyu-busted",
+    "zygarde-50": "zygarde",
+    "zygarde-10%-power-construct": "zygarde-10",
+    "zygarde-50%-power-construct": "zygarde",
+    "hakamo-o": "hakamoo",
+    "kommo-o": "kommoo",
+    "kommo-o-totem": "kommoo",
+    zygarde: "zygarde-complete",
+    "iron-jugulis": "ironjugulis",
+    "wo-chien": "wochien",
+    "iron-crown": "ironcrown",
+    "scream-tail": "screamtail",
+    "iron-valiant": "ironvaliant",
+    "enamorus-incarnate": "enamorus",
+    "type-null": "typenull",
+  };
+  const rawName = name.toLowerCase();
+  return spriteNameMap[rawName] || rawName.replace(/[^a-z0-9-]/g, "");
+}
+
+export default function RadarChartComparison() {
+  const [data, setData] = useState<Pokemon[]>([]);
+  const [pokemon1, setPokemon1] = useState<Pokemon | null>(null);
+  const [pokemon2, setPokemon2] = useState<Pokemon | null>(null);
+  const [maxValue, setMaxValue] = useState<number>(defaultMax);
+  const chartRef = useRef<SVGSVGElement | null>(null);
+
+  const [pokemon1Input, setPokemon1Input] = useState("");
+  const [pokemon2Input, setPokemon2Input] = useState("");
+  const [pokemon1Selected, setPokemon1Selected] = useState(false);
+  const [pokemon2Selected, setPokemon2Selected] = useState(false);
+
+  const width = 300;
+  const height = 300;
+  const radius = Math.min(width, height) / 2 - 30;
+  const centerX = width / 2;
+  const centerY = height / 2;
+  const angleSlice = (Math.PI * 2) / statOrder.length;
 
   useEffect(() => {
-    const currentTournament = tournaments[format];
-    if (currentTournament) {
-      if (!currentTournament.years.includes(year)) {
-        setYear(currentTournament.years[0]);
-      }
-    }
-    d3.csv("/data/top20_usage_per_year.csv", d3.autoType).then(
-      (data: any[]) => {
-        const filtered = data.filter(
-          (d) => d.year === year && d.format === format
-        );
-        const svg = d3.select(svgRef.current);
-        svg.selectAll("*").remove();
-        const container = svgRef.current?.parentElement;
-        const width = container ? container.clientWidth : 800;
-        const height = container ? container.clientHeight : 800;
-        let radarMargin = { top: 10, right: 30, bottom: 60, left: 60 },
-          radarWidth = width - 100,
-          radarHeight = 400;
-        d3.csv("/data/pokmeon_competitive.csv", d3.autoType)
-          .then((rawData) => {
-            let processedData = rawData.filter((d) =>
-              filtered.some((item) => item.name === d.name)
-            );
-            console.log("processedData", processedData);
-            const attributes = [
-              "hp",
-              "attack",
-              "defense",
-              "sp_atk",
-              "sp_def",
-              "speed",
-            ];
-            // Radar Chart for select pokeman
-            const g1 = svg
-              .append("g")
-              .attr(
-                "transform",
-                `translate(${radarMargin.left}, ${radarMargin.top})`
-              );
-            const imageGroup = svg
-              .append("g")
-              .attr(
-                "transform",
-                `translate(${radarMargin.left}, ${radarMargin.top + 20})`
-              );
+    csv(csvPath, (d) => {
+      const parsed: Pokemon = { name: d.name };
+      statOrder.forEach((key) => {
+        parsed[key] = +d[key];
+      });
+      return parsed;
+    }).then(setData);
+  }, []);
 
-            const radarGroup = svg
-              .append("g")
-              .attr("transform", `translate(${width / 2}, ${height / 2})`)
-              .attr("x", (width * 3) / 10);
-
-            const angleSlice = (2 * Math.PI) / attributes.length;
-            const levels = 4;
-            const maxValue = d3.max(processedData, (d) =>
-              Math.max(...attributes.map((attr) => d[attr]))
-            );
-
-            for (let level = 1; level <= levels; level++) {
-              const r = (level / levels) * 100;
-              radarGroup
-                .append("polygon")
-                .attr(
-                  "points",
-                  attributes
-                    .map((_, i) => {
-                      const angle = i * angleSlice + 0.5 * angleSlice;
-                      return [r * Math.cos(angle), r * Math.sin(angle)].join(
-                        ","
-                      );
-                    })
-                    .join(" ")
-                )
-                .attr("fill", "none")
-                .attr("stroke", "#ccc");
-            }
-
-            // add attibutes description
-            attributes.forEach((attr, i) => {
-              const angle = i * angleSlice + 0.5 * angleSlice;
-              radarGroup
-                .append("text")
-                .attr("x", 120 * Math.cos(angle))
-                .attr("y", 120 * Math.sin(angle))
-                .attr("text-anchor", "middle")
-                .attr("font-size", "12px")
-                .text(attr);
-            });
-
-            const radarLine = d3
-              .lineRadial()
-              .radius((d) => (d.value / maxValue) * 100)
-              .angle((d, i) => i * angleSlice + 2 * angleSlice)
-              .curve(d3.curveLinearClosed);
-
-            const radarPath1 = radarGroup
-              .append("path")
-              .attr("fill", "rgba(0, 128, 255, 0.3)")
-              .attr("stroke", "blue");
-
-            const radarPath2 = radarGroup
-              .append("path")
-              .attr("fill", "rgba(255, 255, 0, 0.3)")
-              .attr("stroke", "yellow");
-            function updateRadar() {
-              g1.select(".title").remove();
-              const sortedData = processedData.sort((a, b) =>
-                d3.ascending(a["total_stats"], b["total_stats"])
-              );
-              if (sortedData.length == 0) return;
-              const poke1 = sortedData[0];
-              const poke2 = sortedData[sortedData.length - 1];
-              const usage1 = filtered
-                .find((item) => poke1.name == item.name)
-                .usage.toFixed(2);
-              const usage2 = filtered
-                .find((item) => poke2.name == item.name)
-                .usage.toFixed(2);
-              const data1 = attributes.map((attr) => ({
-                axis: attr,
-                value: poke1[attr],
-              }));
-              radarPath1.datum(data1).attr("d", radarLine);
-
-              const data2 = attributes.map((attr) => ({
-                axis: attr,
-                value: poke2[attr],
-              }));
-              radarPath2.datum(data2).attr("d", radarLine);
-
-              const text1 = poke1["name"] + "(" + usage1 + "%)";
-              const text2 = poke2["name"] + "(" + usage2 + "%)";
-              g1.append("text")
-                .attr("x", (width * 3) / 10)
-                .attr("y", 10)
-                .attr("text-anchor", "middle")
-                .attr("font-size", "18px")
-                .attr("class", "title")
-                .attr("fill", "blue")
-                .text(text1);
-
-              g1.append("text")
-                .attr("x", (width * 3) / 10 + text1.length * 8)
-                .attr("y", 10)
-                .attr("text-anchor", "middle")
-                .attr("font-size", "18px")
-                .attr("class", "title")
-                .text("VS ");
-
-              g1.append("text")
-                .attr("x", (width * 3) / 10 + text1.length * 16 + 10)
-                .attr("y", 10)
-                .attr("text-anchor", "middle")
-                .attr("font-size", "18px")
-                .attr("class", "title")
-                .attr("fill", "yellow")
-                .text(text2);
-
-              imageGroup
-                .append("image")
-                .attr("xlink:href", formatName(poke1["name"]))
-                .attr("x", (width * 3) / 10 - 40)
-                .attr("y", 0);
-
-              imageGroup
-                .append("image")
-                .attr("xlink:href", formatName(poke2["name"]))
-                .attr("x", (width * 3) / 10 - 40 + text1.length * 16)
-                .attr("y", 0);
-            }
-            updateRadar();
-          })
-          .catch(console.error);
-      }
+  useEffect(() => {
+    const candidates = [pokemon1, pokemon2].filter(Boolean) as Pokemon[];
+    const allStats = candidates.flatMap((pkmn) =>
+      statOrder.map((k) => pkmn[k] as number)
     );
-  }, [year, format]);
+    const maxStat = allStats.length ? Math.max(...allStats) : 0;
+    setMaxValue(Math.max(defaultMax, maxStat));
+  }, [pokemon1, pokemon2]);
+
+  // Initial static drawing of axes, labels, and empty polygons
+  useEffect(() => {
+    const svg = d3.select(chartRef.current);
+    svg.selectAll("*").remove();
+
+    svg.attr("width", width).attr("height", height);
+    const group = svg
+      .append("g")
+      .attr("transform", `translate(${centerX}, ${centerY})`);
+
+    for (let lvl = 1; lvl <= 5; lvl++) {
+      const r = (radius * lvl) / 5;
+      const points = statOrder.map((_, i) => {
+        const angle = angleSlice * i - Math.PI / 2;
+        return [r * Math.cos(angle), r * Math.sin(angle)];
+      });
+      group
+        .append("polygon")
+        .attr("points", points.map((p) => p.join(",")).join(" "))
+        .attr("stroke", "#ccc")
+        .attr("fill", "none");
+    }
+
+    statOrder.forEach((_, i) => {
+      const angle = angleSlice * i - Math.PI / 2;
+      const x = radius * Math.cos(angle);
+      const y = radius * Math.sin(angle);
+      group
+        .append("line")
+        .attr("x1", 0)
+        .attr("y1", 0)
+        .attr("x2", x)
+        .attr("y2", y)
+        .attr("stroke", "#999");
+      group
+        .append("text")
+        .attr("x", x * 1.1)
+        .attr("y", y * 1.1)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "central")
+        .text(axisLabels[i]);
+    });
+
+    // Append polygons with IDs for later updating
+    group
+      .append("polygon")
+      .attr("id", "pokemon1Poly")
+      .attr("fill", "#0096FF")
+      .attr("stroke", "#0096FF")
+      .attr("opacity", 0.5)
+      .attr(
+        "points",
+        Array(statOrder.length)
+          .fill([0, 0])
+          .map((p) => p.join(","))
+          .join(" ")
+      ); // start collapsed
+
+    group
+      .append("polygon")
+      .attr("id", "pokemon2Poly")
+      .attr("fill", "#FF2400")
+      .attr("stroke", "#FF2400")
+      .attr("opacity", 0.5)
+      .attr(
+        "points",
+        Array(statOrder.length)
+          .fill([0, 0])
+          .map((p) => p.join(","))
+          .join(" ")
+      ); // start collapsed
+  }, []);
+
+  // Animate polygons smoothly including appearing/disappearing by morphing points
+  useEffect(() => {
+    const svg = d3.select(chartRef.current);
+    const group = svg.select("g");
+
+    const transition = d3.transition().duration(600).ease(d3.easeCubicOut);
+
+    // Points collapsed at center (for no data)
+    const centerPoints = Array(statOrder.length)
+      .fill([0, 0])
+      .map((p) => p.join(","))
+      .join(" ");
+
+    const makePoints = (pokemon: Pokemon | null) => {
+      if (!pokemon) return centerPoints;
+      return statOrder
+        .map((key, i) => {
+          const value = pokemon[key] as number;
+          const scaled = (value / maxValue) * radius;
+          const angle = angleSlice * i - Math.PI / 2;
+          return [scaled * Math.cos(angle), scaled * Math.sin(angle)];
+        })
+        .map((p) => p.join(","))
+        .join(" ");
+    };
+
+    group
+      .select("#pokemon1Poly")
+      .transition(transition)
+      .attr("points", makePoints(pokemon1));
+
+    group
+      .select("#pokemon2Poly")
+      .transition(transition)
+      .attr("points", makePoints(pokemon2));
+  }, [pokemon1, pokemon2, maxValue]);
+
+  const getSuggestions = (input: string) => {
+    if (!input) return [];
+    const lower = input.toLowerCase();
+    // Changed from startsWith to includes for substring match anywhere in the name
+    return data.filter((p) => p.name.toLowerCase().includes(lower));
+  };
 
   return (
-    <Box
-      sx={{
-        mt: 6,
+    <div
+      style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "stretch",
-        width: "100%",
+        alignItems: "center",
+        gap: 24,
+        padding: 16,
       }}
     >
-      <Typography variant="h5" align="center" gutterBottom sx={{ mb: 2 }}>
-        Competitive Pokémon Attribute ({format}, {year})
-      </Typography>
-
-      <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 2 }}>
-        <ToggleButtonGroup
-          value={format}
-          exclusive
-          onChange={(_, val) =>
-            val && setFormat(val) && setYear(tournaments[val]["years"][0])
-          }
-          sx={{
-            backgroundColor: "#2f353f",
-            borderRadius: 1,
-            "& .MuiToggleButton-root": {
-              color: "white",
-              borderColor: "#999",
-              "&.Mui-selected": {
-                backgroundColor: "white",
-                color: "#2f353f",
-                fontWeight: "bold",
-              },
-            },
+      {/* Row with the two search bars centered above the radar chart */}
+      <div
+        style={{
+          display: "flex",
+          gap: 24,
+          justifyContent: "center",
+          width: 600,
+        }}
+      >
+        {/* Pokemon 1 Search + Sprite */}
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            width: 180,
+            flexShrink: 0,
+            marginLeft: 32, // This accounts for the sprite adding virtual length to the viewer
           }}
         >
-          <ToggleButton value="Smogon">Smogon</ToggleButton>
-          <ToggleButton value="Worlds">VGC (Worlds)</ToggleButton>
-        </ToggleButtonGroup>
-
-        <FormControl size="small" sx={{ minWidth: 100 }}>
-          <InputLabel sx={{ color: "white" }}>Year</InputLabel>
-          <Select
-            value={year}
-            onChange={(e) => setYear(+e.target.value)}
-            label="Year"
-            sx={{
-              color: "white",
-              backgroundColor: "#2f353f",
-              borderColor: "#ccc",
-              ".MuiOutlinedInput-notchedOutline": { borderColor: "#aaa" },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#fff",
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#fff",
-              },
-              ".MuiSvgIcon-root": { color: "white" },
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="Pokémon 1"
+            value={
+              pokemon1Input.charAt(0).toUpperCase() + pokemon1Input.slice(1)
+            }
+            onChange={(e) => {
+              const value = e.target.value;
+              setPokemon1Input(value);
+              setPokemon1Selected(false);
+              const match = data.find(
+                (p) => p.name.toLowerCase() === value.toLowerCase()
+              );
+              setPokemon1(match || null);
             }}
-          >
-            {tournaments[format]["years"].map((y) => (
-              <MenuItem key={y} value={y}>
-                {y}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+            onBlur={() => setTimeout(() => setPokemon1Selected(true), 200)}
+            autoComplete="off"
+            sx={{
+              backgroundColor: "white",
+              width: "100%",
+              boxSizing: "border-box",
+              paddingRight: 0,
+            }}
+          />
+          <img
+            src={
+              pokemon1
+                ? `https://play.pokemonshowdown.com/sprites/gen5/${getShowdownSpriteName(
+                    pokemon1.name
+                  )}.png`
+                : pokeball
+            }
+            alt={pokemon1 ? pokemon1.name : "Pokeball"}
+            width={40}
+            height={40}
+            style={{ objectFit: "contain" }}
+            loading="lazy"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = pokeball;
+            }}
+          />
+          {!pokemon1Selected && getSuggestions(pokemon1Input).length > 0 && (
+            <div
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                width: "150px",
+                boxSizing: "border-box",
+                border: "1px solid #ccc",
+                maxHeight: 150,
+                overflowY: "auto",
+                backgroundColor: "white",
+                zIndex: 10,
+                borderRadius: 4,
+                boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+              }}
+            >
+              {getSuggestions(pokemon1Input).map((p) => (
+                <div
+                  key={p.name}
+                  style={{
+                    padding: "6px 12px",
+                    cursor: "pointer",
+                    borderBottom: "1px solid #eee",
+                    fontWeight: "bold",
+                    color: typeColors[p.type1] || "#000",
+                  }}
+                  onMouseDown={() => {
+                    setPokemon1(p);
+                    setPokemon1Input(p.name);
+                    setPokemon1Selected(true);
+                  }}
+                >
+                  {p.name.charAt(0).toUpperCase() + p.name.slice(1)}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      <Paper sx={{ p: 2 }}>
-        <svg ref={svgRef} style={{ width: "100%", height: "600px" }}></svg>
-      </Paper>
-    </Box>
+        {/* Pokemon 2 Search + Sprite */}
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            width: 180,
+            flexShrink: 0,
+            marginLeft: 32, // This accounts for the sprite adding virtual length to the viewer
+          }}
+        >
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="Pokémon 2"
+            value={
+              pokemon2Input.charAt(0).toUpperCase() + pokemon2Input.slice(1)
+            }
+            onChange={(e) => {
+              const value = e.target.value;
+              setPokemon2Input(value);
+              setPokemon2Selected(false);
+              const match = data.find(
+                (p) => p.name.toLowerCase() === value.toLowerCase()
+              );
+              setPokemon2(match || null);
+            }}
+            onBlur={() => setTimeout(() => setPokemon2Selected(true), 200)}
+            autoComplete="off"
+            sx={{
+              backgroundColor: "white",
+              width: "100%",
+              boxSizing: "border-box",
+              paddingRight: 0,
+            }}
+          />
+          <img
+            src={
+              pokemon2
+                ? `https://play.pokemonshowdown.com/sprites/gen5/${getShowdownSpriteName(
+                    pokemon2.name
+                  )}.png`
+                : pokeball
+            }
+            alt={pokemon2 ? pokemon2.name : "Pokeball"}
+            width={40}
+            height={40}
+            style={{ objectFit: "contain" }}
+            loading="lazy"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = pokeball;
+            }}
+          />
+          {!pokemon2Selected && getSuggestions(pokemon2Input).length > 0 && (
+            <div
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                width: "150px",
+                boxSizing: "border-box",
+                border: "1px solid #ccc",
+                maxHeight: 150,
+                overflowY: "auto",
+                backgroundColor: "white",
+                zIndex: 10,
+                borderRadius: 4,
+                boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+              }}
+            >
+              {getSuggestions(pokemon2Input).map((p) => (
+                <div
+                  key={p.name}
+                  style={{
+                    padding: "6px 12px",
+                    cursor: "pointer",
+                    borderBottom: "1px solid #eee",
+                    fontWeight: "bold",
+                    color: typeColors[p.type1] || "#000",
+                  }}
+                  onMouseDown={() => {
+                    setPokemon2(p);
+                    setPokemon2Input(p.name);
+                    setPokemon2Selected(true);
+                  }}
+                >
+                  {p.name.charAt(0).toUpperCase() + p.name.slice(1)}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Radar Chart style box (white paper) */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: "#fff",
+          border: "1px solid #ddd",
+          borderRadius: 8,
+          padding: 8,
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+          width: "fit-content",
+        }}
+      >
+        <svg ref={chartRef} width={300} height={300} />
+      </div>
+    </div>
   );
 }

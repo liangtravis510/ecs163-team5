@@ -30,6 +30,7 @@ export default function TypeDistribution() {
     }
   };
 
+  // Load CSV and parse types into a map of primary types to Pokémon
   useEffect(() => {
     d3.csv("/data/pokmeon_competitive.csv").then((data) => {
       const typeMap: Record<string, PokemonType[]> = {};
@@ -37,12 +38,15 @@ export default function TypeDistribution() {
         typeMap[type] = [];
       });
 
+      // data parsing for dataset
       data.forEach((d: any) => {
         const name = d.name?.toLowerCase() || "";
         const primary = d.type1?.toLowerCase() || "unknown";
         const secondary =
           !d.type2 || d.type2.trim() === "" ? null : d.type2.toLowerCase();
 
+        // In pokemon, mimikyu has totem sprites to mimic certain characters which is why this is in the filter
+        // In addition, zygarde was repeated in certain instances which needed to be fixed
         if (
           name.includes("zygarde-10%-power-construct") ||
           name.includes("zygarde-50%-power-construct") ||
@@ -59,6 +63,7 @@ export default function TypeDistribution() {
     });
   }, []);
 
+  // Scroll to top when returning to overview
   useEffect(() => {
     if (!activePrimary) scrollToTop();
   }, [activePrimary]);
@@ -79,6 +84,7 @@ export default function TypeDistribution() {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    // Get types to display based on state
     const types = activePrimary
       ? [activePrimary]
       : Object.keys(typeData).filter((t) => t !== "no_type");
@@ -87,6 +93,7 @@ export default function TypeDistribution() {
     const maxCount = Math.max(...types.map((type) => typeData[type].length));
     const y = d3.scaleLinear().domain([0, maxCount]).range([height, 0]);
 
+    // Draw X and Y axes
     g.append("g")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x))
@@ -102,6 +109,7 @@ export default function TypeDistribution() {
       .style("font-size", "12px")
       .style("fill", "white");
 
+    // Render bars and handles click event behaviors
     types.forEach((type) => {
       const total = typeData[type].length;
       const secondaryCounts: Record<string, number> = {};
@@ -119,6 +127,7 @@ export default function TypeDistribution() {
         !activeSecondaryView &&
         !selectedSecondary
       ) {
+        //stacked bars by secondary type
         Object.entries(secondaryCounts)
           .sort((a, b) => b[1] - a[1])
           .forEach(([secType, count]) => {
@@ -149,6 +158,7 @@ export default function TypeDistribution() {
             currentY = start;
           });
       } else if (!activePrimary) {
+        // Overview mode: single bar per primary type
         barGroup
           .append("rect")
           .attr("x", xPos)
@@ -166,7 +176,7 @@ export default function TypeDistribution() {
           .duration(600)
           .attr("height", height - y(total));
       }
-
+      // Click event for drill-down and back navigation
       barGroup
         .on("click", () => {
           if (!activePrimary) {
@@ -187,6 +197,7 @@ export default function TypeDistribution() {
         .text(`${type}: ${total} Pokémon`);
     });
 
+    // Legend for stacked bars (secondary types)
     if (activePrimary && !activeSecondaryView && !selectedSecondary) {
       const legendData = Object.entries(typeColors).filter(
         ([type]) => type !== "no_type"
@@ -258,6 +269,7 @@ export default function TypeDistribution() {
         Type Distribution Bar Chart
       </Typography>
 
+      {/* Hide bar chart when viewing filtered Pokémon list */}
       <div
         style={{
           overflowX: "auto",
@@ -271,12 +283,17 @@ export default function TypeDistribution() {
         <svg ref={svgRef} style={{ display: "block", margin: "0 auto" }}></svg>
       </div>
 
+      {/*Pokémon display */}
       {activePrimary && activeSecondaryView && (
         <Box sx={{ mt: 4, px: 4 }}>
           <Typography variant="h6" align="center" gutterBottom>
-            Pokémon with Primary Type: {activePrimary.charAt(0).toUpperCase() + activePrimary.slice(1)}
+            Pokémon with Primary Type:{" "}
+            {activePrimary.charAt(0).toUpperCase() + activePrimary.slice(1)}
             {selectedSecondary
-              ? ` and Secondary Type: ${selectedSecondary.charAt(0).toUpperCase() + selectedSecondary.slice(1)}`
+              ? ` and Secondary Type: ${
+                  selectedSecondary.charAt(0).toUpperCase() +
+                  selectedSecondary.slice(1)
+                }`
               : ""}
           </Typography>
           <Box sx={{ mt: 2, textAlign: "center" }}>

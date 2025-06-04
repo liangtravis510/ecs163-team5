@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 type PokemonTeam = string[];
@@ -25,6 +25,15 @@ const teams: PokemonTeam[] = [
     "Zamazenta",
     "Glimmora",
   ], //Team US Midwest – kythr’s Finals Team
+];
+
+const teamTitles: string[] = [
+  "2022 VGC World Champion Team",
+  "2023 VGC World Champion Team",
+  "2024 VGC World Champion Team",
+  "2022 Smogon World Champion Team",
+  "2023 Smogon World Champion Team",
+  "2024 US Midwest Finals Team (Kythr)",
 ];
 
 // Map display names to showdown sprite format
@@ -148,6 +157,9 @@ export default function TeamCarousel() {
           <ArrowForwardIos />
         </IconButton>
       </Box>
+      <Typography variant="subtitle1" sx={{ mt: 2 }}>
+        {teamTitles[index]}
+      </Typography>
     </Box>
   );
 }

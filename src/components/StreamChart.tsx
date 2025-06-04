@@ -42,21 +42,16 @@ export default function StreamChart() {
     "fairy",
   ];
 
-  // Fixed container size, trying to fix the issues with the stream chart UI
   const containerWidth = 1000;
   const containerHeight = 400;
   const streamMargin = { top: 10, right: 0, bottom: 60, left: 60 };
   const gapBetweenChartLegend = 8;
 
-  // Legend width measured dynamically
-  const [legendWidth, setLegendWidth] = useState(150); // initial guess
-
-  // Fixing the issues with the legend and the white space on the right of it
+  const [legendWidth, setLegendWidth] = useState(150);
   const streamWidth =
     containerWidth - streamMargin.left - gapBetweenChartLegend - legendWidth;
   const streamHeight = containerHeight - streamMargin.top - streamMargin.bottom;
 
-  // Using this ref to hold legend group for measurement because we have to calculate the paper width
   const legendRef = useRef<SVGGElement>(null);
 
   useEffect(() => {
@@ -369,19 +364,19 @@ export default function StreamChart() {
               {format === "Smogon" ? (
                 <>
                   {year === 2014 &&
-                    "In 2014, Smogon’s meta was dominated by Mega Evolutions with Pokémon like Mega Kangaskhan and Mega Gengar shaping the gameplay."}
+                    "In 2014, Smogon’s meta was dominated by fairy type Pokemon and Mega Evolution introduced in Generation 6. Because of this, older pokemon gained new typings such as Gardevior and Mawile who were popular options due to their minimal type weaknesses. To counter this, poison types such as Mega Gengar began to become more popular to try to deal with the emergence of fairy types."}
                   {year === 2015 &&
-                    "The 2015 metagame saw the rise of bulky stall teams and strong weather strategies using Pokémon like Tyranitar and Politoed."}
+                    "The 2015 metagame saw the rise of bulky stall teams and strong weather strategies using Pokémon like Tyranitar and Politoed to buff for their team or to apply afflictions towards the enemy."}
                   {year === 2016 &&
-                    "By 2016, the metagame balanced offensive and defensive cores, with threats such as Talonflame and Mega Manectric being prominent."}
+                    "By 2016, the metagame balanced offensive and defensive cores, with threats such as Talonflame and Mega Manectric being prominent due to their high speed stat and strong sweeping capabilities."}
                   {year === 2017 &&
-                    "2017 introduced new formats and bans that influenced team building, focusing on synergy and status conditions."}
+                    "2017 introduced new formats and bans that influenced team building, focusing on synergy and status conditions. With the ban on Mega Evolution and limitiations to certain legendary/mythical pokemon, trainers were limited to only pokemon avaliable in the new Generation 7 games (Pokemon Sun & Moon)."}
                   {year === 2018 &&
-                    "In 2018, Trick Room teams and bulky Waters like Toxapex gained popularity as defensive pillars."}
+                    "In 2018, changed were made again to allow Mega Evolutions but still restrict mythical and certain legendary pokemon. This meant that again, the popularization of bulky stallers began to rise again. Trick Room teams and bulky Waters like Toxapex gained popularity due to Trick Room being able to move first in battle if a Pokemon a lower speed stat."}
                   {year === 2019 &&
-                    "2019’s meta featured a wider variety of threats, with Landorus-Therian and Mega Mawile being key players."}
+                    "2019’s meta featured a wider variety of threats, with Incineroar growing in popularity as the staple Generation 7 Pokemon and Mega-Salamence being a popular sweeper"}
                   {year === 2020 &&
-                    "Dynamax mechanics were banned in Smogon 2020, shifting focus back to traditional battling and new Pokémon like Dragapult emerging."}
+                    "With the introduction of Generation 8, Dynamax mechanics were banned in Smogon 2020, shifting focus back to traditional battling and new Pokémon like Dragapult emerging. Dragpult with its Dragon/Ghost combination as well as respectiable 120 atk and 142 speed making it a very viable wallbreaker in certain defensive teams. "}
                   {year === 2021 &&
                     "In 2021, the meta adapted to new Galar Pokémon and strategies involving priority moves and Trick Room continued to be relevant."}
                   {year === 2022 &&
@@ -397,12 +392,13 @@ export default function StreamChart() {
                       reliability.
                       <br />
                       <br />
-                      Note! Pokémon usage data calculates the chance that a
-                      given Pokémon <em>appears in a battle on either team</em>.
-                      It does not calculate what percent that Pokémon is out of
-                      the total Pokemon ever used in a year/format. This means
-                      that percentages are <em>not out of 100%</em>. This is why
-                      the usage streams stack to so far over 100%.
+                      <b>Note!</b> Pokémon usage data calculates the chance that
+                      a given Pokémon{" "}
+                      <em>appears in a battle on either team</em>. It does not
+                      calculate what percent that Pokémon is out of the total
+                      Pokemon ever used in a year/format. This means that
+                      percentages are <em>not out of 100%</em>. This is why the
+                      usage streams stack to so far over 100%.
                     </>
                   )}
                 </>
@@ -411,9 +407,9 @@ export default function StreamChart() {
                   {year === 2022 &&
                     "The VGC 2022 format was defined by the restricted legendaries and Dynamax. Common team cores included Kyogre + Tornadus and Zacian + Incineroar."}
                   {year === 2023 &&
-                    "VGC 2023 shifted to a more balanced metagame with Paradox Pokémon and Terastallization. Flutter Mane and Iron Bundle dominated early usage trends."}
+                    "VGC 2023 shifted to a more balanced metagame with Paradox Pokémon and the Terastallization mechanic. The Terastallization mechanic could be used once during a battle where the user could change the their default typing to a brand new monotype of choosing.  Flutter Mane and Iron Bundle dominated early usage trends using the new Terastallization mechanic to buff their attacks."}
                   {year === 2024 &&
-                    "The current VGC format continues evolving with regulation sets. Terastallization has enabled a wide range of creative strategies and counterplay."}
+                    "The current VGC format continues evolving with regulation sets. Terastallization has enabled a wide range of creative strategies and counterplay. With the ability to change their typings, teams now have to account for type changes when selecting which type to attack with "}
                 </>
               )}
             </Typography>

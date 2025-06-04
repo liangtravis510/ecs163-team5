@@ -10,9 +10,9 @@ import TeamCarousel from "./components/TeamCarousel";
 import TypeDistribution from "./components/TypeDistribution";
 import TypeChartHeatmap from "./components/TypeChartHeatmap";
 import StatOverview from "./components/StatOverview";
-///import RadarChart from "./components/RadarChart";
 import StreamChart from "./components/StreamChart";
 import TeamBuilderBarChart from "./components/TeamBuilderAssistant";
+import RadarChart from "./components/RadarChart"; // Testing
 
 function App() {
   return (
@@ -79,10 +79,10 @@ function App() {
             Pokémon Types
           </Typography>
           <Typography variant="body1">
-            Pokémon have primary and secondary types. This visualization
-            shows the distribution of Pokémon by their primary type. Click
-            the bars to view the distribution of secondary types, as well 
-            as Pokémon with matching primary and secondary types.
+            Pokémon have primary and secondary types. This visualization shows
+            the distribution of Pokémon by their primary type. Click the bars to
+            view the distribution of secondary types, as well as Pokémon with
+            matching primary and secondary types.
           </Typography>
           <TypeDistribution />
         </Paper>
@@ -107,9 +107,9 @@ function App() {
             With every combination of Pokémon types comes strengths and
             weaknesses. Some grant immunity to certain type moves, while others
             provide significantly larger advantages and disadvantages. It is up
-            to the trainer to find the best way to navigate certain
-            weaknesses and strengths. Below shows examples of type combinations and
-            their weakness and advantages based on certain typing of their attacks.
+            to the trainer to find the best way to navigate certain weaknesses
+            and strengths. Below shows examples of type combinations and their
+            weakness and advantages based on certain typing of their attacks.
           </Typography>
           <TypeChartHeatmap />
           <Box
@@ -167,8 +167,8 @@ function App() {
           </Typography>
           <Typography variant="body1">
             Each Pokémon has six stats: HP, Attack, Defense, Special Attack,
-            Special Defense, and Speed. These stats determine how well a
-            Pokémon performs in battles.
+            Special Defense, and Speed. These stats determine how well a Pokémon
+            performs in battles.
           </Typography>
           <StatOverview />
         </Paper>
@@ -187,22 +187,24 @@ function App() {
             p: 4, // more padding for breathing room
             borderRadius: "8px",
           }}
-        > 
+        >
           <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
             How Has Usage Changed Over Time?
           </Typography>
           <Typography variant="body1">
-            Competitive Pokémon usage trends evolve with each generation's 
-            differences. The following streamgraph demonstrates trends of
-            using different Pokémon types throughout the generations, for
-            a given format and year.
+            Competitive Pokémon usage trends evolve with each generation's
+            differences. The following streamgraph demonstrates trends of using
+            different Pokémon types throughout the generations, for a given
+            format and year.
           </Typography>
           <StreamChart />
         </Paper>
       </Container>
 
       {/* Team Builder and Type Spread*/}
-      <Container sx={{ mt: 8, maxWidth: "md" }}>
+      <Container maxWidth={false} sx={{ mt: 8, px: 4 }}>
+        {" "}
+        {/* <Container maxWidth={false} sx={{ mt: 8, px: 4 }}>      ||    <Container sx={{ mt: 8, maxWidth: "md" }}>*/}
         <Paper
           elevation={0}
           sx={{
@@ -214,16 +216,45 @@ function App() {
           }}
         >
           <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
-            Team Builder Asssistant: Net Weaknesses and Resistances
+            Team Builder Assistant: Net Weaknesses and Resistances
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" gutterBottom>
             Use the search box to add your favorite Pokémon to your team! The
             weakness and resistance calculator will show you what types you're
             weak and strong against!
           </Typography>
 
-          {/* Your TeamBuilderBarChart component goes here */}
-          <TeamBuilderBarChart />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              justifyContent: "space-between",
+              gap: 4,
+              mt: 2,
+            }}
+          >
+            <Box sx={{ flex: 1, minWidth: 300 }}>
+              <TeamBuilderBarChart />
+            </Box>
+            <Box sx={{ flex: 1, minWidth: 300, ml: 50, mt: 5 }}>
+              <RadarChart />
+            </Box>
+          </Box>
+          <Box sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 2 }}>
+            <Paper sx={{ p: 2, backgroundColor: "#2a2a2a", color: "white" }}>
+              <Typography variant="subtitle1" gutterBottom>
+                <strong>Note</strong>
+              </Typography>
+              <Typography>
+                Radar chart compares two Pokemon's stats! The max axes values
+                are capped out at 160 by default, as this is a common value
+                among famous legendary Pokemon (such as Mewtwo, with a Special
+                Attack of 154). But, if either Pokemon has a stat value of over
+                160, than the max value of all axes are dynamically recalculated
+                to that new highest stat value.
+              </Typography>
+            </Paper>
+          </Box>
         </Paper>
       </Container>
     </Box>

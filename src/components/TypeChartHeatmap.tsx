@@ -311,10 +311,15 @@ export default function TypeChartHeatmap() {
       ref={containerRef}
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <Typography variant="h5" align="center" gutterBottom sx={{ mb: 2, mt: 4 }}>
+      <Typography
+        variant="h5"
+        align="center"
+        gutterBottom
+        sx={{ mb: 2, mt: 4 }}
+      >
         Type Effectiveness Heatmap
       </Typography>
-      
+
       <FormControl sx={{ minWidth: 220, marginBottom: 4 }}>
         <InputLabel sx={{ color: "white", fontSize: 11, fontWeight: "bold" }}>
           Primary Type
@@ -340,8 +345,16 @@ export default function TypeChartHeatmap() {
           ))}
         </Select>
       </FormControl>
-      
-      <div style={{ overflowX: "auto", padding: "1rem", width: "100%", display: "flex", justifyContent: "center" }}>
+
+      <div
+        style={{
+          overflowX: "auto",
+          padding: "1rem",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <svg ref={ref}></svg>
       </div>
     </div>

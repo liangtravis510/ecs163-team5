@@ -5,6 +5,8 @@ import { types, weaknessResistanceChart } from "../utils/defensiveTypeChart";
 import pokeball from "../assets/sprites/pokeball.png";
 
 // Color mapping for Pokémon types (used for visual consistency)
+// Currently only pulling the color strings, still required for current design
+
 const typeColors: Record<string, string> = {
   Normal: "#A8A878",
   Fire: "#F08030",
@@ -374,7 +376,7 @@ export default function TeamBuilderBarChart() {
   const svgRef = useRef<SVGSVGElement>(null);
 
   // Dimensions & margins for chart
-  const margin = { top: 40, right: 60, bottom: 40, left: 60 };
+  const margin = { top: 10, right: 10, bottom: 10, left: 40 };
   const width = 700 - margin.left - margin.right;
   const height = 400 - margin.top - margin.bottom;
 
@@ -591,7 +593,7 @@ export default function TeamBuilderBarChart() {
       }}
     >
       {/* LEFT SIDE: Team Builder */}
-      <div style={{ flex: 1, maxWidth: "280px" }}>
+      <div style={{ flex: 1, minWidth: "320px" }}>
         <Typography variant="h6" gutterBottom>
           Team Builder
         </Typography>
@@ -648,8 +650,8 @@ export default function TeamBuilderBarChart() {
         </Typography>
         <div
           style={{
-            display: "flex",
-            flexWrap: "wrap",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
             gap: "12px",
             minHeight: "150px",
           }}
@@ -663,7 +665,7 @@ export default function TeamBuilderBarChart() {
                   padding: "8px 12px",
                   backgroundColor: "#f0f0f0",
                   borderRadius: "4px",
-                  minWidth: "80px",
+                  minWidth: "72px",
                   textAlign: "center",
                   userSelect: "none",
                   cursor: name ? "pointer" : "default",
