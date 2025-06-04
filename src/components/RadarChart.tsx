@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import * as d3 from "d3";
 import { csv } from "d3-fetch";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 const statOrder = ["hp", "attack", "defense", "speed", "sp_def", "sp_atk"];
 const axisLabels = ["HP", "Attack", "Defense", "Speed", "Sp. Def", "Sp. Atk"];
@@ -347,10 +348,9 @@ export default function RadarChartComparison() {
       }}
     >
       {/* Title */}
-      <h2 style={{ margin: 0, fontSize: 24, fontWeight: "bold" }}>
+      <Typography variant="h6" gutterBottom sx={{ textAlign: "center" }}>
         Pokémon Stat Comparison Tool
-      </h2>
-
+      </Typography>
       {/* Row with the two search bars centered above the radar chart */}
       <div
         style={{
@@ -372,7 +372,9 @@ export default function RadarChartComparison() {
             marginLeft: 32, // This accounts for the sprite adding virtual length to the viewer
           }}
         >
-          <span className="color-label" style={{ color: "#0096FF" }}>⬤</span>
+          <span className="color-label" style={{ color: "#0096FF" }}>
+            ⬤
+          </span>
           <TextField
             variant="outlined"
             size="small"
@@ -467,7 +469,9 @@ export default function RadarChartComparison() {
             marginLeft: 32, // This accounts for the sprite adding virtual length to the viewer
           }}
         >
-          <span className="color-label" style={{ color: "#FF2400" }}>⬤</span>
+          <span className="color-label" style={{ color: "#FF2400" }}>
+            ⬤
+          </span>
           <TextField
             variant="outlined"
             size="small"
@@ -550,7 +554,6 @@ export default function RadarChartComparison() {
           )}
         </div>
       </div>
-
       {/* Radar Chart style box (white paper) */}
       <div
         style={{
