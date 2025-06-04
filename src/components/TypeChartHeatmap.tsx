@@ -301,7 +301,7 @@ export default function TypeChartHeatmap() {
           case 4:
             return "4";
           default:
-            return d.multiplier.toFixed(1);
+            return d.multiplier.toFixed(2);
         }
       });
   }, [primaryType, comboCounts]);
