@@ -15,12 +15,28 @@ import {
 import { tournaments, typeColors, generations } from "../utils/typeChart";
 import type { TournamentType } from "../utils/typeChart";
 
+// Structure of each Pokémon entry in the CSV
+interface Pokemon {
+  generation: string;
+  type1: string;
+  type2?: string;
+  [key: string]: string | number | undefined;
+}
+
+// structure for each data point in the stream graph
+interface StreamData {
+  generation: string;
+  [type: string]: string | number;
+}
+
 export default function StreamChart() {
   const svgRef = useRef<SVGSVGElement>(null);
+  const legendRef = useRef<SVGGElement>(null);
   const [year, setYear] = useState<number>(2024);
   const [format, setFormat] = useState<TournamentType>("Smogon");
-  const usagePrefix = "VGC_Usage";
+  const [legendWidth, setLegendWidth] = useState<number>(150);
 
+  const usagePrefix = "VGC_Usage";
   const types = [
     "normal",
     "fire",
@@ -42,17 +58,14 @@ export default function StreamChart() {
     "fairy",
   ];
 
+  // Chart dimensions
   const containerWidth = 1000;
   const containerHeight = 400;
   const streamMargin = { top: 10, right: 0, bottom: 60, left: 60 };
   const gapBetweenChartLegend = 8;
-
-  const [legendWidth, setLegendWidth] = useState(150);
   const streamWidth =
     containerWidth - streamMargin.left - gapBetweenChartLegend - legendWidth;
   const streamHeight = containerHeight - streamMargin.top - streamMargin.bottom;
-
-  const legendRef = useRef<SVGGElement>(null);
 
   useEffect(() => {
     const currentTournament = tournaments[format];
@@ -62,198 +75,161 @@ export default function StreamChart() {
   }, [format, year]);
 
   useEffect(() => {
-    // Putting the entire thing in a useEffect
-    d3.csv("/data/pokmeon_competitive.csv", d3.autoType)
-      .then((rawData) => {
+    d3.csv<Pokemon>("/data/pokmeon_competitive.csv", d3.autoType).then(
+      (rawData: Pokemon[]) => {
         const svg = d3.select(svgRef.current);
         svg.selectAll("*").remove();
 
-        // Prepare data grouped by generation and type
-        let processedData: Record<string, Record<string, any[]>> = {};
+        // Organize data by generation and type
+        const processedData: Record<string, Record<string, Pokemon[]>> = {};
         generations.forEach((gen) => {
           processedData[gen] = {};
           types.forEach((type) => {
             processedData[gen][type] = [];
           });
         });
+
+        // Fill processed data
         rawData.forEach((pokemon) => {
-          processedData[pokemon.generation][pokemon.type1].push(pokemon);
-          if (pokemon.type2 !== "No_type") {
-            processedData[pokemon.generation][pokemon.type2].push(pokemon);
+          if (pokemon.generation && pokemon.type1) {
+            processedData[pokemon.generation][pokemon.type1]?.push(pokemon);
+            if (pokemon.type2 && pokemon.type2 !== "No_type") {
+              processedData[pokemon.generation][pokemon.type2]?.push(pokemon);
+            }
           }
         });
 
-        const yearKey = format + "_" + usagePrefix + "_" + year;
+        const yearKey = `${format}_${usagePrefix}_${year}`;
 
-        function updateStream() {
-          svg.selectAll("*").remove();
-
-          // Build data array for stacking
-          const streamData = [];
-          generations.forEach((gen) => {
-            let data: Record<string, number | string> = {};
-            types.forEach((type) => {
-              let usage = 0;
-              processedData[gen][type].forEach((pokeman) => {
-                if (pokeman[yearKey] !== "NoUsage") {
-                  usage += pokeman[yearKey];
-                }
-              });
-              data[type] = usage;
+        // Extract usage data per type per generation
+        const streamData: StreamData[] = generations.map((gen) => {
+          const data: StreamData = { generation: gen };
+          types.forEach((type) => {
+            let usage = 0;
+            processedData[gen][type].forEach((pokemon) => {
+              const val = pokemon[yearKey];
+              if (typeof val === "number") usage += val;
             });
-            data["generation"] = gen;
-            streamData.push(data);
+            data[type] = usage;
           });
+          return data;
+        });
 
-          const stack = d3
-            .stack()
-            .keys(types)
-            .offset(d3.stackOffsetNone)
-            .order(d3.stackOrderNone);
+        // stack the data for stream chart
+        const stack = d3.stack<StreamData>().keys(types);
+        const stackedData = stack(streamData);
 
-          const stackedData = stack(streamData);
+        const x = d3
+          .scalePoint()
+          .domain(generations)
+          .range([streamMargin.left, streamMargin.left + streamWidth])
+          .padding(0);
 
-          const x = d3
-            .scalePoint()
-            .domain(generations)
-            .range([streamMargin.left, streamMargin.left + streamWidth])
-            .padding(0);
+        const maxUsage = Math.max(
+          ...stackedData.flatMap((layer) => layer.flatMap((d) => d[1]))
+        );
 
-          let maxUsage = 0;
-          stackedData.forEach((layer) => {
-            layer.forEach((point) => {
-              maxUsage = Math.max(maxUsage, point[0], point[1]);
-            });
-          });
+        const y = d3
+          .scaleLinear()
+          .domain([0, maxUsage * 1.1])
+          .range([streamMargin.top + streamHeight, streamMargin.top]);
 
-          const y = d3
-            .scaleLinear()
-            .domain([0, maxUsage * 1.1])
-            .range([streamMargin.top + streamHeight, streamMargin.top]);
+        // Area generator
+        const area = d3
+          .area<[number, number]>()
+          .x((_, i) => x((streamData[i] as StreamData).generation)!)
+          .y0((d) => y(d[0]))
+          .y1((d) => y(d[1]))
+          .curve(d3.curveMonotoneX);
 
-          const area = d3
-            .area()
-            .x((d) => x(d.data.generation)!)
-            .y0((d) => y(d[0]))
-            .y1((d) => y(d[1]))
-            .curve(d3.curveMonotoneX);
+        // Draw layers
+        const layers = svg
+          .selectAll(".layer")
+          .data(stackedData)
+          .enter()
+          .append("g")
+          .attr("class", "layer");
 
-          // Draw stacked areas
-          const layers = svg
-            .selectAll(".layer")
-            .data(stackedData)
-            .enter()
+        layers
+          .append("path")
+          .attr("class", "stream-area")
+          .attr("d", area as any)
+          .style("fill", (d) => typeColors[d.key as string])
+          .style("opacity", 0.8)
+          .style("stroke", "#fff")
+          .style("stroke-width", 0.5);
+
+        // x axis (Generations)
+        svg
+          .append("g")
+          .attr("transform", `translate(0,${streamMargin.top + streamHeight})`)
+          .call(
+            d3.axisBottom(x).tickFormat((gen) => {
+              const genMap: Record<string, string> = {
+                "generation-i": "I",
+                "generation-ii": "II",
+                "generation-iii": "III",
+                "generation-iv": "IV",
+                "generation-v": "V",
+                "generation-vi": "VI",
+                "generation-vii": "VII",
+                "generation-viii": "VIII",
+                "generation-ix": "IX",
+              };
+              return genMap[gen] || gen;
+            })
+          );
+
+        // y axis (Usage %)
+        svg
+          .append("g")
+          .attr("transform", `translate(${streamMargin.left},0)`)
+          .call(
+            d3
+              .axisLeft(y)
+              .ticks(5)
+              .tickFormat((d) => `${d3.format(".1f")(d)}%`)
+          );
+
+        // formats legend to the right
+        svg
+          .append("rect")
+          .attr("x", streamMargin.left)
+          .attr("y", streamMargin.top)
+          .attr("width", streamWidth)
+          .attr("height", streamHeight)
+          .style("fill", "none")
+          .style("stroke", "#ccc")
+          .style("stroke-dasharray", "5,5");
+
+        const legendX = streamMargin.left + streamWidth + gapBetweenChartLegend;
+        const legend = svg
+          .append("g")
+          .attr("transform", `translate(${legendX},${streamMargin.top})`);
+        legendRef.current = legend.node() as SVGGElement;
+
+        types.forEach((c, i) => {
+          const g = legend
             .append("g")
-            .attr("class", "layer")
-            .attr("data-type", (d) => d.key);
+            .attr("transform", `translate(0, ${i * 20})`);
+          g.append("rect")
+            .attr("width", 12)
+            .attr("height", 12)
+            .attr("fill", typeColors[c]);
+          g.append("text").attr("x", 16).attr("y", 10).text(c);
+        });
 
-          layers
-            .append("path")
-            .attr("class", "stream-area")
-            .attr("d", area)
-            .style("fill", (d) => typeColors[d.key])
-            .style("opacity", 0.8)
-            .style("stroke", "#fff")
-            .style("stroke-width", 0.5);
-
-          // Axes
-          const xAxis = d3.axisBottom(x).tickFormat((gen) => {
-            const genMap: Record<string, string> = {
-              "generation-i": "I",
-              "generation-ii": "II",
-              "generation-iii": "III",
-              "generation-iv": "IV",
-              "generation-v": "V",
-              "generation-vi": "VI",
-              "generation-vii": "VII",
-              "generation-viii": "VIII",
-              "generation-ix": "IX",
-            };
-            return genMap[gen] || gen;
-          });
-
-          svg
-            .append("g")
-            .attr(
-              "transform",
-              `translate(0,${streamMargin.top + streamHeight})`
-            )
-            .call(xAxis);
-
-          const yAxis = d3
-            .axisLeft(y)
-            .ticks(5)
-            .tickFormat((d) => `${d3.format(".1f")(d)}%`);
-
-          svg
-            .append("g")
-            .attr("transform", `translate(${streamMargin.left},0)`)
-            .call(yAxis);
-
-          // Chart bounding box
-          svg
-            .append("rect")
-            .attr("x", streamMargin.left)
-            .attr("y", streamMargin.top)
-            .attr("width", streamWidth)
-            .attr("height", streamHeight)
-            .style("fill", "none")
-            .style("stroke", "#ccc")
-            .style("stroke-dasharray", "5,5");
-
-          // Axis labels
-          svg
-            .append("text")
-            .attr("font-size", "18px")
-            .attr("x", streamMargin.left + streamWidth / 2)
-            .attr("y", streamMargin.top + streamHeight + 50)
-            .attr("text-anchor", "middle")
-            .text("Generation");
-
-          svg
-            .append("text")
-            .attr("font-size", "18px")
-            .attr("x", -streamMargin.top - streamHeight / 2)
-            .attr("y", 14)
-            .attr("text-anchor", "middle")
-            .attr("transform", "rotate(-90)")
-            .text("Usage");
-
-          // Create legend group at correct position:
-          const legendX =
-            streamMargin.left + streamWidth + gapBetweenChartLegend;
-          const legend = svg
-            .append("g")
-            .attr("transform", `translate(${legendX},${streamMargin.top})`);
-          legendRef.current = legend.node();
-
-          types.forEach((c, i) => {
-            const g = legend
-              .append("g")
-              .attr("transform", `translate(0, ${i * 20})`);
-            g.append("rect")
-              .attr("width", 12)
-              .attr("height", 12)
-              .attr("fill", typeColors[c]);
-            g.append("text").attr("x", 16).attr("y", 10).text(c);
-          });
-        }
-
-        updateStream();
-
-        // Measure legend width and update state
+        // measure and update legend width dynamically
         setTimeout(() => {
-          if (!svgRef.current) return;
-          const legendNode = legendRef.current;
-          if (legendNode) {
-            const bbox = legendNode.getBBox();
+          if (legendRef.current) {
+            const bbox = legendRef.current.getBBox();
             if (bbox.width && bbox.width !== legendWidth) {
               setLegendWidth(bbox.width);
             }
           }
         }, 0);
-      })
-      .catch(console.error);
+      }
+    );
   }, [year, format, legendWidth]);
 
   return (
@@ -284,7 +260,9 @@ export default function StreamChart() {
             value={format}
             exclusive
             onChange={(_, val) =>
-              val && setFormat(val) && setYear(tournaments[val]["years"][0])
+              val &&
+              setFormat(val as TournamentType) &&
+              setYear(tournaments[val as TournamentType]["years"][0])
             }
             sx={{
               backgroundColor: "#2f353f",
