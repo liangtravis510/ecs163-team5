@@ -163,7 +163,7 @@ function App() {
           }}
         >
           <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
-            How Do Stats Affect Pokemon Battles?
+            How Do Stats Affect Pokémon Battles?
           </Typography>
           <Typography variant="body1">
             Each Pokémon has six stats: HP, Attack, Defense, Special Attack,

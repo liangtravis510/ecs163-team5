@@ -364,17 +364,17 @@ export default function StreamChart() {
               {format === "Smogon" ? (
                 <>
                   {year === 2014 &&
-                    "In 2014, Smogon’s meta was dominated by fairy type Pokemon and Mega Evolution introduced in Generation 6. Because of this, older pokemon gained new typings such as Gardevior and Mawile who were popular options due to their minimal type weaknesses. To counter this, poison types such as Mega Gengar began to become more popular to try to deal with the emergence of fairy types."}
+                    "In 2014, Smogon’s meta was dominated by fairy type Pokémon and Mega Evolution introduced in Generation 6. Because of this, older Pokémon gained new typings such as Gardevior and Mawile who were popular options due to their minimal type weaknesses. To counter this, poison types such as Mega Gengar began to become more popular to try to deal with the emergence of fairy types."}
                   {year === 2015 &&
                     "The 2015 metagame saw the rise of bulky stall teams and strong weather strategies using Pokémon like Tyranitar and Politoed to buff for their team or to apply afflictions towards the enemy."}
                   {year === 2016 &&
                     "By 2016, the metagame balanced offensive and defensive cores, with threats such as Talonflame and Mega Manectric being prominent due to their high speed stat and strong sweeping capabilities."}
                   {year === 2017 &&
-                    "2017 introduced new formats and bans that influenced team building, focusing on synergy and status conditions. With the ban on Mega Evolution and limitiations to certain legendary/mythical pokemon, trainers were limited to only pokemon avaliable in the new Generation 7 games (Pokemon Sun & Moon)."}
+                    "2017 introduced new formats and bans that influenced team building, focusing on synergy and status conditions. With the ban on Mega Evolution and limitiations to certain legendary/mythical Pokémon, trainers were limited to only Pokémon avaliable in the new Generation 7 games (Pokémon Sun & Moon)."}
                   {year === 2018 &&
-                    "In 2018, changed were made again to allow Mega Evolutions but still restrict mythical and certain legendary pokemon. This meant that again, the popularization of bulky stallers began to rise again. Trick Room teams and bulky Waters like Toxapex gained popularity due to Trick Room being able to move first in battle if a Pokemon a lower speed stat."}
+                    "In 2018, changed were made again to allow Mega Evolutions but still restrict mythical and certain legendary Pokémon. This meant that again, the popularization of bulky stallers began to rise again. Trick Room teams and bulky Waters like Toxapex gained popularity due to Trick Room being able to move first in battle if a Pokémon a lower speed stat."}
                   {year === 2019 &&
-                    "2019’s meta featured a wider variety of threats, with Incineroar growing in popularity as the staple Generation 7 Pokemon and Mega-Salamence being a popular sweeper"}
+                    "2019’s meta featured a wider variety of threats, with Incineroar growing in popularity as the staple Generation 7 Pokémon and Mega-Salamence being a popular sweeper"}
                   {year === 2020 &&
                     "With the introduction of Generation 8, Dynamax mechanics were banned in Smogon 2020, shifting focus back to traditional battling and new Pokémon like Dragapult emerging. Dragpult with its Dragon/Ghost combination as well as respectiable 120 atk and 142 speed making it a very viable wallbreaker in certain defensive teams. "}
                   {year === 2021 &&
@@ -396,7 +396,7 @@ export default function StreamChart() {
                       a given Pokémon{" "}
                       <em>appears in a battle on either team</em>. It does not
                       calculate what percent that Pokémon is out of the total
-                      Pokemon ever used in a year/format. This means that
+                      Pokémon ever used in a year/format. This means that
                       percentages are <em>not out of 100%</em>. This is why the
                       usage streams stack to so far over 100%.
                     </>
