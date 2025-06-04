@@ -61,7 +61,7 @@ export default function StreamChart() {
   // Chart dimensions
   const containerWidth = 1000;
   const containerHeight = 400;
-  const streamMargin = { top: 10, right: 0, bottom: 60, left: 60 };
+  const streamMargin = { top: 10, right: 0, bottom: 60, left: 80 };
   const gapBetweenChartLegend = 8;
   const streamWidth =
     containerWidth - streamMargin.left - gapBetweenChartLegend - legendWidth;
@@ -180,6 +180,15 @@ export default function StreamChart() {
             })
           );
 
+        svg
+          .append("text")
+          .attr("x", streamMargin.left + streamWidth / 2)
+          .attr("y", streamMargin.top + streamHeight + 45)
+          .attr("text-anchor", "middle")
+          .style("font-size", "14px")
+          .style("fill", "black")
+          .text("Generation");
+
         // y axis (Usage %)
         svg
           .append("g")
@@ -190,6 +199,15 @@ export default function StreamChart() {
               .ticks(5)
               .tickFormat((d) => `${d3.format(".1f")(d)}%`)
           );
+        svg
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", -streamMargin.top - streamHeight / 2)
+          .attr("y", 20)
+          .attr("text-anchor", "middle")
+          .style("font-size", "14px")
+          .style("fill", "black")
+          .text("Usage (%)");
 
         // formats legend to the right
         svg
