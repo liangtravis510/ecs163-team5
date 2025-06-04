@@ -223,7 +223,8 @@ function App() {
             weakness and resistance calculator will show you what types you're
             weak and strong against! A balanced team doesn't want any glaring 
             weaknesses to any types. Start off by selecting your favorites, to
-            see how they match up to the other types!
+            see how they match up to the other types! If you want to remove any
+            Pokémon from your team, just click the box!
             <br />
             <br />
             As you get comfortable, you can use the other visualizations to start 
