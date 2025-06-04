@@ -216,12 +216,21 @@ function App() {
           }}
         >
           <Typography variant="h6" gutterBottom sx={{ color: "#ffffff" }}>
-            Team Builder Assistant: Net Weaknesses and Resistances
+            Team Builder Assistant: Net Weaknesses and Resistances and Stat Comparison Tool!
           </Typography>
           <Typography variant="body1" gutterBottom>
             Use the search box to add your favorite Pokémon to your team! The
             weakness and resistance calculator will show you what types you're
-            weak and strong against!
+            weak and strong against! A balanced team doesn't want any glaring 
+            weaknesses to any types. Start off by selecting your favorites, to
+            see how they match up to the other types!
+            <br />
+            <br />
+            As you get comfortable, you can use the other visualizations to start 
+            building a competitive team. If you don't know where to begin, try using
+            some of the Championship teams included at the top of this page, to see
+            how they fare! Then explore at your own pace. You can use the Pokémon
+            Stat Comparison Tool to help you decide between Pokémon!
           </Typography>
 
           <Box
@@ -246,12 +255,15 @@ function App() {
                 <strong>Note</strong>
               </Typography>
               <Typography>
-                Radar chart compares two Pokemon's stats! The max axes values
+                The radar chart compares two Pokémon's stats! The max axes values
                 are capped out at 160 by default, as this is a common value
-                among famous legendary Pokemon (such as Mewtwo, with a Special
-                Attack of 154). But, if either Pokemon has a stat value of over
-                160, than the max value of all axes are dynamically recalculated
-                to that new highest stat value.
+                among famous legendary Pokémon (such as Mewtwo, with a Special
+                Attack of 154, or Lugia, with a Special Defense of 154). But, 
+                if either Pokémon has a stat value of over 160, than the max value
+                of all axes are dynamically recalculated to that new highest stat
+                value! This is because some Pokémon have massive stat outliers;
+                Blissey has an HP value of 255! Compare it to a strong Pokémon like
+                Mewtwo to see this dynamic recalculation, preserving scale of differences.
               </Typography>
             </Paper>
           </Box>

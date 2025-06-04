@@ -5,7 +5,7 @@ import { types, weaknessResistanceChart } from "../utils/defensiveTypeChart";
 import pokeball from "../assets/sprites/pokeball.png";
 
 // Color mapping for Pokémon types (used for visual consistency)
-// Currently only pulling the color strings, still required for current design
+// Currently only pulling the type strings, still required for current design
 
 const typeColors: Record<string, string> = {
   Normal: "#A8A878",
@@ -651,7 +651,7 @@ export default function TeamBuilderBarChart() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
+            gridTemplateColumns: "repeat(2, 1fr)",
             gap: "12px",
             minHeight: "150px",
           }}

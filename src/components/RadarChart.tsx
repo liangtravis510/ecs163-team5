@@ -346,6 +346,11 @@ export default function RadarChartComparison() {
         padding: 16,
       }}
     >
+      {/* Title */}
+      <h2 style={{ margin: 0, fontSize: 24, fontWeight: "bold" }}>
+        Pokémon Stat Comparison Tool
+      </h2>
+
       {/* Row with the two search bars centered above the radar chart */}
       <div
         style={{
@@ -367,6 +372,7 @@ export default function RadarChartComparison() {
             marginLeft: 32, // This accounts for the sprite adding virtual length to the viewer
           }}
         >
+          <span className="color-label" style={{ color: "#0096FF" }}>⬤</span>
           <TextField
             variant="outlined"
             size="small"
@@ -461,6 +467,7 @@ export default function RadarChartComparison() {
             marginLeft: 32, // This accounts for the sprite adding virtual length to the viewer
           }}
         >
+          <span className="color-label" style={{ color: "#FF2400" }}>⬤</span>
           <TextField
             variant="outlined"
             size="small"
