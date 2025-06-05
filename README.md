@@ -24,6 +24,7 @@ This project explores the competitive Pokémon battling experience through data 
      ```bash
     nvm install node # "node" is an alias for the latest version
      ```
+    To run the code run the following:
     ```bash
     npm install
     ```
