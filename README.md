@@ -23,7 +23,8 @@ This project is a data storytelling website built with React and D3.js that aims
 ![Type Distribution Bar Chart 1](src/assets/img/Type_Distribution1.png)
 ![Type Distribution Bar Chart 2](src/assets/img/Type_Distribution2.png)
 ![Type Distribution Bar Chart 3](src/assets/img/Type_Distribution3.png)
-
+### Type Effectiveness Heatmap
+![Type Heatmap 3](src/assets/img/Heatmap.png)
 ---
 ## Dataset
 
