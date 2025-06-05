@@ -58,7 +58,8 @@ This project is a data storytelling website built with React and D3.js that aims
      ```bash
     nvm install node # "node" is an alias for the latest version
      ```
-3. Demo\n
+3. Demo
+   
     Run the following:
     ```bash
     npm install
