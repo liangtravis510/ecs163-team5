@@ -68,7 +68,8 @@ This project is a data storytelling website built with React and D3.js that aims
     ```bash
     npm run dev
     ```
-## ** Team **
+    
+## **Team**
 | Team Member       | Contributions                                                                                      |
 |-------------------|----------------------------------------------------------------------------------------------------|
 | **Megan Liu**     | Implemented the Type Distribution Bar Chart and contributed to the final UI layout and integration. |
