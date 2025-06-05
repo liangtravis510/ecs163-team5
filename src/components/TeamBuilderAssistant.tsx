@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import * as d3 from "d3";
-import { Typography, Button, TextField } from "@mui/material";
+import { Typography, Button, TextField, Box } from "@mui/material";
 import { types, weaknessResistanceChart } from "../utils/defensiveTypeChart";
 import pokeball from "../assets/sprites/pokeball.png";
 
@@ -28,6 +28,59 @@ const typeColors: Record<string, string> = {
   Fairy: "#EE99AC",
   No_type: "#555555",
 };
+
+const presetTeams: string[][] = [
+  [
+    "Gastrodon-east",
+    "calyrex-shadow-rider",
+    "Rillaboom",
+    "Incineroar",
+    "Thundurus-Incarnate",
+    "Zacian",
+  ],
+  [
+    "landorus-therian",
+    "urshifu-single",
+    "Flutter-mane",
+    "Chien-Pao",
+    "Amoonguss",
+    "Arcanine",
+  ],
+  [
+    "Miraidon",
+    "Ogerpon-teal",
+    "Urshifu-single",
+    "Iron-Hands",
+    "Whimsicott",
+    "Farigiraf",
+  ],
+  [
+    "Dragonite",
+    "Landorus-therian",
+    "Volcanion",
+    "Weavile",
+    "Magnezone",
+    "Tapu-Lele",
+  ],
+  ["Samurott-Hisui", "Ceruledge", "Skeledirge", "Pawmot", "Garchomp", "Scizor"],
+  [
+    "Samurott-Hisui",
+    "Landorus-Therian",
+    "Kingambit",
+    "Darkrai",
+    "Zamazenta",
+    "Glimmora",
+  ],
+];
+
+const presetTitles: string[] = [
+  "2022 VGC",
+  "2023 VGC",
+  "2024 VGC",
+  "2022 Smogon ",
+  "2023 Smogon ",
+  "2024 Smogon",
+];
 
 interface Pokemon {
   name: string;
@@ -182,6 +235,7 @@ function getShowdownSpriteName(name: string): string {
     "iron-valiant": "ironvaliant",
     "enamorus-incarnate": "enamorus",
     "type-null": "typenull",
+    "calyrex-shadow": "calyrex-shadow",
   };
   const rawName = name.toLowerCase();
   return spriteNameMap[rawName] || rawName.replace(/[^a-z0-9-]/g, "");
@@ -240,9 +294,21 @@ function calculateNetDefensiveSpread(team: Pokemon[]): Record<string, number> {
   return spread;
 }
 
+/**
+ * The TeamBuilderBarChart component enables users to build a Pokémon team of six
+ * and visualizes their collective net weaknesses and resistances by type.
+ *
+ * It uses D3.js to render a double-sided bar chart where:
+ * - Positive values = team weaknesses to a type
+ * - Negative values = team resistances to a type
+ *
+ * Users can search and add Pokémon, use preset teams, sort the chart, and remove members.
+ */
 export default function TeamBuilderBarChart() {
+  /**
+   * Current team of six Pokémon (or null if empty slot)
+   */
   const [team, setTeam] = useState<(string | null)[]>([
-    // Team Array
     null,
     null,
     null,
@@ -250,28 +316,87 @@ export default function TeamBuilderBarChart() {
     null,
     null,
   ]);
+
+  /**
+   * Complete Pokémon dataset loaded from CSV
+   */
   const [pokemonData, setPokemonData] = useState<Pokemon[]>([]);
+
+  /**
+   * User's current search input for Pokémon name
+   */
   const [searchName, setSearchName] = useState("");
+
+  /**
+   * List of Pokémon suggestions based on current search input
+   */
   const [suggestions, setSuggestions] = useState<Pokemon[]>([]);
 
+  /**
+   * Counts how many times each type appears across the current team
+   */
   const initialTypeCounts: Record<string, number> = Object.fromEntries(
     Object.keys(typeColors).map((type) => [type, 0])
   );
-
   const [typeCounts, setTypeCounts] =
     useState<Record<string, number>>(initialTypeCounts);
 
+  /**
+   * Stores the net defensive spread of the team (resistance/weakness profile)
+   */
   const [netDefensiveSpread, setNetDefensiveSpread] = useState<
     Record<string, number>
   >(Object.fromEntries(Object.keys(typeColors).map((type) => [type, 0])));
 
-  // FINAL STEP: 1) Add isSorted and currentTypeOrder states
-  const [isSorted, setIsSorted] = useState(false); // Track if bars are sorted by net defensive score
+  /**
+   * Backup of user's original team when a preset team is loaded
+   */
+  const [savedTeam, setSavedTeam] = useState<(string | null)[] | null>(null);
+
+  /**
+   * Whether the user is currently using a preset team
+   */
+  const [isUsingPreset, setIsUsingPreset] = useState(false);
+
+  /**
+   * Whether the bar chart is currently sorted by net weakness values
+   */
+  const [isSorted, setIsSorted] = useState(false);
+
+  /**
+   * Order of types currently shown on the X-axis (default or sorted)
+   */
   const [currentTypeOrder, setCurrentTypeOrder] = useState<string[]>([
     ...filteredTypes,
-  ]); // Current ordering of types on X-axis
+  ]);
 
-  // Load CSV on mount
+  /**
+   * Loads a preset team into the team array and saves the current one if needed
+   */
+  const loadPresetTeam = (teamList: string[]) => {
+    if (!isUsingPreset) {
+      setSavedTeam([...team]);
+      setIsUsingPreset(true);
+    }
+
+    const resolvedTeam = teamList.map((name) => {
+      const found = pokemonData.find(
+        (p) => p.name.toLowerCase() === name.toLowerCase()
+      );
+      return found ? found.name : null;
+    });
+
+    if (resolvedTeam.some((p) => p === null)) {
+      alert("One or more Pokémon not found in dataset!");
+      return;
+    }
+
+    setTeam(resolvedTeam);
+  };
+
+  /**
+   * Loads the Pokémon CSV and parses it for team builder usage
+   */
   useEffect(() => {
     d3.csv("/data/pokmeon_competitive.csv").then((data) => {
       const parsedData: Pokemon[] = data
@@ -703,6 +828,54 @@ export default function TeamBuilderBarChart() {
             );
           })}
         </div>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 2, mb: 2 }}>
+          {presetTitles.map((title, idx) => (
+            <Button
+              key={idx}
+              size="small"
+              variant="outlined"
+              onClick={() => loadPresetTeam(presetTeams[idx])}
+              sx={{
+                whiteSpace: "nowrap",
+                textTransform: "none",
+                fontSize: "0.75rem",
+                borderColor: "#aaa",
+                color: "#fff",
+                backgroundColor: "#444",
+                "&:hover": {
+                  backgroundColor: "#666",
+                },
+              }}
+            >
+              {title}
+            </Button>
+          ))}
+
+          {isUsingPreset && savedTeam && (
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => {
+                setTeam(savedTeam);
+                setSavedTeam(null);
+                setIsUsingPreset(false);
+              }}
+              sx={{
+                whiteSpace: "nowrap",
+                textTransform: "none",
+                fontSize: "0.75rem",
+                borderColor: "#aaa",
+                color: "#fff",
+                backgroundColor: "#888",
+                "&:hover": {
+                  backgroundColor: "#aaa",
+                },
+              }}
+            >
+              Return to My Team
+            </Button>
+          )}
+        </Box>
       </div>
 
       {/* RIGHT SIDE: Double-sided Bar Chart */}
