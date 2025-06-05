@@ -172,11 +172,24 @@ export default function StreamChart() {
         layers
           .append("path")
           .attr("class", "stream-area")
-          .attr("d", area as any)
+          .attr("d", (d) => {
+            // Create flat version of the area
+            const flatArea = d3
+              .area<[number, number]>()
+              .x((_, i) => x((streamData[i] as StreamData).generation)!)
+              .y0((d) => y(d[0]))
+              .y1((d) => y(d[0]))
+              .curve(d3.curveMonotoneX);
+            return flatArea(d as any);
+          })
           .style("fill", (d) => typeColors[d.key as string])
           .style("opacity", 0.8)
           .style("stroke", "#fff")
-          .style("stroke-width", 0.5);
+          .style("stroke-width", 0.5)
+          .transition() // Start animation
+          .duration(1000)
+          .delay((_, i) => i * 50) // Stagger animations
+          .attr("d", area as any); // Final area shape
 
         // x axis (Generations)
         svg
