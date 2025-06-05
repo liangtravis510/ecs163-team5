@@ -1,7 +1,7 @@
 # ECS 163 Final Project
 ## Overview
 
-This project explores the competitive Pokémon battling experience through data visualizations using the martini glass structure. The construction of the file is implemented using **Vite + React + TypeScript**
+This project is a data storytelling website built with React and D3.js that aims to visualize trends in This project is a data storytelling website that visualizes trends in competitive Pokémon battling across Smogon (Singles) and VGC (Doubles) formats from 2022–2024. We use the **Martini Glass** structure to guide users from beginner-friendly introductions into exploratory tools that support advanced team-building.
 
 ---
 
