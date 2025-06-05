@@ -103,11 +103,11 @@ function App() {
           {/* Explanation of color mapping */}
           <Box sx={legendStyle}>
             {[
-              { label: "No Effect (0×)", color: "#222" },
-              { label: "Not Very Effective (½×)", color: "#4a90e2" },
-              { label: "Effective (1×)", color: "#fff", border: "#ccc" },
-              { label: "Super Effective (2×)", color: "pink" },
-              { label: "Double Effective (4×)", color: "#ff2222" },
+              { label: "No Effect (0×)", color: "#ff2222" },
+              { label: "Not Very Effective (½×)", color: "#ff9999" },
+              { label: "Effective (1×)", color: "white", border: "#ccc" },
+              { label: "Super Effective (2×)", color: "#99cc99" },
+              { label: "Double Effective (4×)", color: "#009900" },
             ].map(({ label, color, border }) => (
               <Box key={label} sx={legendItemStyle}>
                 <Box

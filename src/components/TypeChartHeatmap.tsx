@@ -118,7 +118,7 @@ export default function TypeChartHeatmap() {
     const colorScale = d3
       .scaleLinear<string>()
       .domain([0, 0.5, 1, 2, 4])
-      .range(["#222", "#4a90e2", "#fff", "pink", "#ff2222"]);
+      .range(["#ff2222", "#ff9999", "white", "#99cc99", "#009900"]);
 
     // Draw headers for Type1, Type2, Count
     const headers = [

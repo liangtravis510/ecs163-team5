@@ -109,6 +109,25 @@ export default function TypeDistribution() {
       .selectAll("text")
       .style("font-size", "12px")
       .style("fill", "white");
+      
+    // Add X axis label
+    g.append("text")
+      .attr("x", width / 2)
+      .attr("y", height + margin.bottom - 15)
+      .attr("fill", "white")
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Primary Type");
+      
+    // Add Y axis label
+    g.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
+      .attr("y", -margin.left + 15)
+      .attr("fill", "white")
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Number of Pokémon");
 
     // Render bars and handles click event behaviors
     types.forEach((type) => {
@@ -133,7 +152,7 @@ export default function TypeDistribution() {
           .sort((a, b) => b[1] - a[1])
           .forEach(([secType, count]) => {
             const start = currentY - count;
-            barGroup
+            const segment = barGroup
               .append("rect")
               .attr("x", xPos)
               .attr("y", y(currentY))
@@ -157,8 +176,11 @@ export default function TypeDistribution() {
               })
               .on("mouseout", function () {
                 d3.select(this).attr("stroke", "none");
-              })
-              .transition()
+              });
+            // Add tooltip for secondary type
+            segment.append("title")
+              .text(`${type}-${secType === "no_type" ? "only" : secType}: ${count} Pokémon`);
+            segment.transition()
               .duration(600)
               .attr("y", y(currentY))
               .attr("height", y(start) - y(currentY));
