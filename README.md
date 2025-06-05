@@ -20,7 +20,7 @@ This project is a data storytelling website built with React and D3.js that aims
 | **Radar Chart Comparison** | Compare two Pokémon’s base stats side-by-side with dynamic scaling. |
 
 ### Type Distribution Bar Chart
-![Type Distribution Bar Chart](src\assets\img\Type_Distribution1.png)
+![Type Distribution Bar Chart](src/assets/img/Type_Distribution1.png)
 
 ---
 ## Dataset
