@@ -26,6 +26,18 @@ This project is a data storytelling website built with React and D3.js that aims
 - In the /data file, it includes additional data from the [Smogen Index](https://www.smogon.com/stats/)
 
 ---
+## Technologies Used
+
+| Tool / Library | Purpose |
+|----------------|---------|
+| **React + TypeScript** | Frontend framework |
+| **D3.js** | Data visualizations |
+| **Vite** | Build tool and dev server |
+| **MUI (Material UI)** | UI components |
+| **Sprites** | Pokémon icons from [Pokémon Showdown](https://play.pokemonshowdown.com/) |
+
+---
+
 
 ## Installation and Setup
 1. **Clone the Repository**
@@ -46,7 +58,8 @@ This project is a data storytelling website built with React and D3.js that aims
      ```bash
     nvm install node # "node" is an alias for the latest version
      ```
-    To run the code run the following:
+3. Demo
+    Run the following:
     ```bash
     npm install
     ```
