@@ -5,8 +5,8 @@ This project is a data storytelling website built with React and D3.js that aims
 
 ## Objectives
 - Provide interactive visualizations to reveal competitive trends, statistical outliers, and type synergies
-- Help users discover viable team compositions via a Team Builder and Weaknesses Calculator along with a radar comparison chart
-- Support Users at ** all skill levels ** with guided explanations and dynamic comparisons.
+- Help users discover viable team compositions via a Team Builder and Weaknesses Calculator, along with a radar comparison chart
+- Support Users at **all skill levels** with guided explanations and dynamic comparisons.
 
 ---
 ## Visualizations
