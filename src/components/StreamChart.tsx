@@ -342,6 +342,7 @@ export default function StreamChart() {
                 color: "white",
                 backgroundColor: "#2f353f",
                 borderColor: "#ccc",
+                height: "48px",
                 ".MuiOutlinedInput-notchedOutline": { borderColor: "#aaa" },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
                   borderColor: "#fff",
