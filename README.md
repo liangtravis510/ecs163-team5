@@ -17,7 +17,7 @@ This project is a data storytelling website built with React and D3.js that aims
 | **Stat Overview Histogram** | Select from HP, Attack, Speed, etc., and view Pokémon stat distributions along with explanations. |
 | **Streamgraph** | Examine changes in usage of Pokémon types across generations and tournament formats. |
 | **Team Builder Assistant** | Add up to 6 Pokémon and see your team’s weaknesses and resistances. |
-| **Radar Chart Comparison** | Compare two Pokémon’s base stats side-by-side with dynamic scaling. |
+| **Radar Chart Stat Comparison** | Compare two Pokémon’s base stats side-by-side with dynamic scaling. |
 
 ### Type Distribution Bar Chart
 ![Type Distribution Bar Chart 1](src/assets/img/Type_Distribution1.png)
@@ -25,6 +25,12 @@ This project is a data storytelling website built with React and D3.js that aims
 ![Type Distribution Bar Chart 3](src/assets/img/Type_Distribution3.png)
 ### Type Effectiveness Heatmap
 ![Type Heatmap 3](src/assets/img/Heatmap.png)
+### Stat Overview Histogram
+![Stat Overview](src/assets/img/statoverview.png)
+### Streamgraph
+![Streamgraph](src/assets/img/streamgraph.png)
+### SteamBuilder & Stat Comparison
+![TeamBuilder](src/assets/img/teambuilder.png)
 ---
 ## Dataset
 
