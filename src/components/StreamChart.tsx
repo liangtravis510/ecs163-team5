@@ -1,3 +1,10 @@
+/**
+ * @fileoverview StreamChart.tsx
+ * Displays a D3 streamgraph of competitive Pokémon type usage over time
+ * across different tournament formats (Smogon or VGC/Worlds). It uses
+ * stacked area layers to show how popular each type was by year and generation.
+ */
+
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import {
@@ -12,10 +19,9 @@ import {
   Select,
 } from "@mui/material";
 
-import { tournaments, typeColors, generations } from "../utils/typeChart";
-import type { TournamentType } from "../utils/typeChart";
-
-// Structure of each Pokémon entry in the CSV
+/**
+ * Represents a single Pokémon's type and usage data from the CSV.
+ */
 interface Pokemon {
   generation: string;
   type1: string;
@@ -23,12 +29,25 @@ interface Pokemon {
   [key: string]: string | number | undefined;
 }
 
-// structure for each data point in the stream graph
+/**
+ * Represents usage per type per generation.
+ */
 interface StreamData {
   generation: string;
   [type: string]: string | number;
 }
 
+import { tournaments, typeColors, generations } from "../utils/typeChart";
+import type { TournamentType } from "../utils/typeChart";
+
+/**
+ * StreamChart component
+ * Renders a streamgraph showing the relative usage of Pokémon types
+ * over different generations and formats (Smogon or VGC).
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function StreamChart() {
   const svgRef = useRef<SVGSVGElement>(null);
   const legendRef = useRef<SVGGElement>(null);

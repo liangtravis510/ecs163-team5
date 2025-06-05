@@ -182,7 +182,7 @@ const spriteNameMap: Record<string, string> = {
   "iron-hands": "ironhands",
   "roaring-moon": "roaringmoon",
   "iron-bundle": "ironbundle",
-  "ting-lu": "tinglu",
+  "ting-lu": "https://play.pokemonshowdown.com/sprites/gen5/tinglu.png",
   "tatsugiri-curly": "tatsugiri",
 
   // more edits to pngs
@@ -293,6 +293,9 @@ const spriteNameMap: Record<string, string> = {
 export const formatName = (name: string): string => {
   const normalized = name.toLowerCase().replace(/[^a-z0-9-]/g, "");
   const mapped = spriteNameMap[normalized];
+  if (normalized === "ting-lu") {
+    return "https://play.pokemonshowdown.com/sprites/gen5/tinglu.png";
+  }
   return mapped?.startsWith("http")
     ? mapped
     : `https://play.pokemonshowdown.com/sprites/gen5/${

@@ -12,6 +12,16 @@ import {
   Select,
 } from "@mui/material";
 
+/**
+ * UsageBarChart renders a vertical bar chart showing the top 20 most-used Pokémon
+ * for a selected year and format (Smogon or Worlds) based on a competitive dataset.
+ *
+ * - Pokémon are represented by bars with usage %.
+ * - X-axis includes Pokémon names and corresponding sprites.
+ * - Y-axis represents usage percentage.
+ * - Users can filter the chart by format and year using Material UI components.
+ *
+ */
 export default function UsageBarChart() {
   const usageNotes: Record<string, string> = {
     "Smogon-2022":

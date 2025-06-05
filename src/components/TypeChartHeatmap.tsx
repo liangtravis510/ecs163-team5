@@ -32,12 +32,33 @@ const typeColors: Record<string, string> = {
   No_type: "#555555", // for monotypes or empty secondaries
 };
 
+/**
+ * TypeChartHeatmap visualizes how effective each attacking type is against dual-type combinations
+ * that include a selected primary type. It uses a heatmap grid to show damage multipliers
+ * (e.g., 0×, 0.5×, 2×, 4×) across all secondary types paired with the primary type.
+ *
+ * Data is sourced from `pokmeon_competitive.csv` and the heatmap is computed dynamically.
+ *
+ * - Vertical axis = all secondary types paired with selected primary
+ * - Horizontal axis = attacking types
+ * - Cell color encodes effectiveness multiplier (e.g., blue = resistance, red = weakness)
+ * - Labels show multipliers like "2", "½", or "0"
+ *
+ * This component includes smooth scrolling, responsive sizing, and Material UI dropdown interaction.
+ */
 export default function TypeChartHeatmap() {
   const ref = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  /** Currently selected primary type for which the heatmap is generated */
   const [primaryType, setPrimaryType] = useState("Normal");
+
+  /** Stores frequency of each [type1/type2] combination */
   const [comboCounts, setComboCounts] = useState<Record<string, number>>({});
 
+  /**
+   * Smooth scroll into view when the primary type changes
+   */
   useEffect(() => {
     if (containerRef.current) {
       // delay scroll to ensure DOM height has adjusted
@@ -51,6 +72,9 @@ export default function TypeChartHeatmap() {
     }
   }, [primaryType]);
 
+  /**
+   * Redraw the heatmap whenever the selected primary type or combination counts change
+   */
   useEffect(() => {
     d3.csv("/data/pokmeon_competitive.csv").then((data) => {
       const counts: Record<string, number> = {};
@@ -96,7 +120,7 @@ export default function TypeChartHeatmap() {
       .domain([0, 0.5, 1, 2, 4])
       .range(["#222", "#4a90e2", "#fff", "pink", "#ff2222"]);
 
-    // Header labels styled like type-icon boxes
+    // Draw headers for Type1, Type2, Count
     const headers = [
       { label: "Type1", x: -180 },
       { label: "Type2", x: -115 },
@@ -127,7 +151,7 @@ export default function TypeChartHeatmap() {
     });
 
     // === LEFT COLUMNS ===
-    // PRIMARY TYPE BOX
+    // Draw rows: primary type, secondary type, count
     g.selectAll(".primary-cell")
       .data(matchingCombos)
       .enter()

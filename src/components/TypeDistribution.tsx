@@ -72,6 +72,7 @@ export default function TypeDistribution() {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
+    // chart params
     const margin = { top: 30, right: 60, bottom: 70, left: 60 };
     const width = 800 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
@@ -138,7 +139,13 @@ export default function TypeDistribution() {
               .attr("y", y(currentY))
               .attr("width", x.bandwidth())
               .attr("height", 0)
-              .attr("fill", typeColors[secType] || "#aaa")
+              .attr(
+                "fill",
+                secType === "no_type"
+                  ? typeColors[type]
+                  : typeColors[secType] || "#aaa"
+              )
+
               .attr("opacity", 0.9)
               .on("click", (event) => {
                 event.stopPropagation();

@@ -7,7 +7,12 @@ import {
   ToggleButton,
   Paper,
 } from "@mui/material";
+import { typeColors, formatName } from "../utils/typeChart";
 
+/**
+ * mapping from stat keys to HTML descriptions.
+ * These descriptions are shown when a stat is selected.
+ */
 const statDescriptions: Record<string, string> = {
   hp: "HP (<strong>Hit Points</strong>) determines how much damage a Pokémon can take before fainting.",
   attack: "Attack affects the power of <strong>physical moves</strong>.",
@@ -18,12 +23,15 @@ const statDescriptions: Record<string, string> = {
     "Speed determines which Pokémon <strong>moves first</strong> each turn.",
 };
 
+/**
+ * key takeaways explaining the competitive relevance of each stat.
+ */
 const statTakeaways: Record<string, string> = {
   hp: "Bulky Pokémon with high HP are useful for stalling and tanking hits. Outliers like Blissey are specialize in their defensive role.",
   attack:
     "High Attack stats are key for physical sweepers and wallbreakers. Pokémon such as Mega Garchomp make for very good sweepers with an attack stat of 170.",
   defense:
-    "Physically defensive Pokémon serve as walls against strong physical attackers. Great for pivoting and support roles. Mega Steelix exiles at this with its staggering 230 defense making it a great waller against physical teams.",
+    "Physically defensive Pokémon serve as walls against strong physical attackers. Great for pivoting and support roles. Mega Steelix excels at this with its staggering 230 defense making it a great waller against physical teams.",
   sp_atk:
     "Special Attack enables powerful ranged attacks. Useful for Pokémon like Alakazam which can counter pokemon with high defense but low special defenses.",
   sp_def:
@@ -32,27 +40,49 @@ const statTakeaways: Record<string, string> = {
     "Speed controls turn order and tempo. Fast Pokémon like Dragapult or Weavile can take their turn first against slower opponents.",
 };
 
+/** List of stat keys in toggle order */
 const statKeys = Object.keys(statDescriptions);
 
+/**
+ * Type definition for a Pokémon's stat record.
+ */
 interface StatRecord {
   name: string;
   value: number;
+  type1: string;
 }
 
+/**
+ * Renders a histogram of stat distribution for Pokémon.
+ * Allows users to toggle between base stats (HP, Attack, etc.)
+ * and shows tooltips with Pokémon images and types.
+ *
+ * @component
+ * @example
+ * return <StatOverview />
+ */
 export default function StatOverview() {
   const svgRef = useRef<SVGSVGElement>(null);
   const [selectedStat, setSelectedStat] = useState("hp");
 
+  /**
+   * Loads CSV data and renders the histogram
+   * Triggered on mount and when selectedStat changes.
+   */
   useEffect(() => {
     const loadData = async () => {
       const data = await d3.csv("/data/pokmeon_competitive.csv");
+
+      /** parsed data for the selected stat */
       const statData: StatRecord[] = data
         .map((d) => ({
           name: d["name"] || "Unknown",
           value: +d[selectedStat]!,
+          type1: d["type1"] || "Unknown",
         }))
         .filter((d) => !isNaN(d.value));
 
+      // Chart params
       const svg = d3.select(svgRef.current);
       const width = 800;
       const height = 400;
@@ -61,23 +91,27 @@ export default function StatOverview() {
       svg.attr("width", width).attr("height", height);
       svg.selectAll("*").remove();
 
+      // X scale for stat values
       const x = d3
         .scaleLinear()
         .domain(d3.extent(statData, (d) => d.value) as [number, number])
         .nice()
         .range([margin.left, width - margin.right]);
 
+      // bin the data for histogram
       const bins = d3
         .bin<StatRecord, number>()
         .value((d) => d.value)
         .domain(x.domain() as [number, number])
         .thresholds(20)(statData);
 
+      // y scale for count of Pokémon per bin
       const y = d3
         .scaleLinear()
         .domain([0, d3.max(bins, (d) => d.length) || 1])
         .range([height - margin.bottom, margin.top]);
 
+      // tooltip setup
       const tooltip = d3
         .select("body")
         .append("div")
@@ -90,8 +124,8 @@ export default function StatOverview() {
         .style("font-size", "12px")
         .style("display", "none");
 
+      // renders bar
       const barGroup = svg.append("g");
-
       const bars = barGroup.selectAll("rect").data(bins, (d: any) => d.x0);
 
       bars
@@ -108,26 +142,18 @@ export default function StatOverview() {
             (prev, curr) => (curr.value > prev.value ? curr : prev),
             d[0]
           );
-          const spriteNameMap: Record<string, string> = {
-            "mewtwo-mega-x": "mewtwo-megax",
-            "mewtwo-mega-y": "mewtwo-megay",
-            "charizard-mega-x": "charizard-megax",
-            "charizard-mega-y": "charizard-megay",
-            "necrozma-dawn-wings": "necrozma-dawnwings",
-            "necrozma-dusk-mane": "necrozma-duskmane",
-            "keldeo-ordinary": "keldeo",
-            "wormadam-plant": "wormadam",
-            "wormadam-sandy": "wormadam-sandy",
-            "wormadam-trash": "wormadam-trash",
-          };
-          const rawName = maxPokemon.name.toLowerCase();
-          const showdownName =
-            spriteNameMap[rawName] || rawName.replace(/[^a-z0-9-]/g, "");
+          const type = maxPokemon.type1;
+          const color = typeColors[type.toLowerCase()] || "#aaa";
+          const spriteUrl = formatName(maxPokemon.name);
 
           tooltip
             .style("display", "block")
+            .style("border", `2px solid ${color}`)
             .html(
-              `<strong>Pokemon:</strong><br/><img src='https://play.pokemonshowdown.com/sprites/gen5/${showdownName}.png' width='40' height='40' /><br/>${maxPokemon.name} (${maxPokemon.value})`
+              `<strong style="color:${color}">${maxPokemon.name}</strong><br/>
+               <img src='${spriteUrl}' width='40' height='40' /><br/>
+               Type: <strong style="color:${color}">${type}</strong><br/>
+               ${selectedStat.toUpperCase()}: ${maxPokemon.value}`
             );
         })
         .on("mousemove", (event) => {
@@ -149,6 +175,7 @@ export default function StatOverview() {
         .attr("height", 0)
         .remove();
 
+      // x-axis
       svg
         .append("g")
         .attr("class", "x-axis")
@@ -162,6 +189,7 @@ export default function StatOverview() {
         .style("font-size", "14px")
         .text("Stat Value");
 
+      // y-axis
       svg
         .append("g")
         .attr("class", "y-axis")
@@ -189,6 +217,7 @@ export default function StatOverview() {
         alignItems: "center",
       }}
     >
+      {/* Title */}
       <Typography variant="h5" gutterBottom>
         Stat Distribution:{" "}
         {selectedStat === "sp_atk"
@@ -198,12 +227,14 @@ export default function StatOverview() {
           : selectedStat.charAt(0).toUpperCase() + selectedStat.slice(1)}
       </Typography>
 
+      {/* Stat Explanation*/}
       <Paper sx={{ p: 2, mb: 2, backgroundColor: "#1e1e1e", color: "white" }}>
         <Typography
           dangerouslySetInnerHTML={{ __html: statDescriptions[selectedStat] }}
         />
       </Paper>
 
+      {/* Buttons for selecting stat */}
       <ToggleButtonGroup
         value={selectedStat}
         exclusive
@@ -229,8 +260,10 @@ export default function StatOverview() {
         ))}
       </ToggleButtonGroup>
 
+      {/*histogram */}
       <svg ref={svgRef} style={{ display: "block", margin: "0 auto" }}></svg>
 
+      {/* Key takeaway note */}
       <Box sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 2 }}>
         <Paper sx={{ p: 2, backgroundColor: "#2a2a2a", color: "white" }}>
           <Typography variant="subtitle1" gutterBottom>

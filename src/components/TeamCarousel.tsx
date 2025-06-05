@@ -56,9 +56,23 @@ const formatName = (name: string): string => {
 const getSpriteUrl = (name: string): string =>
   `https://play.pokemonshowdown.com/sprites/gen5/${formatName(name)}.png`;
 
+/**
+ * Displays a carousel of championship Pokémon teams with sprite previews and transitions.
+ *
+ * Users can:
+ * - View preset competitive Pokémon teams across different years/formats.
+ * - Navigate between them using arrow buttons or team dots.
+ *
+ * Sprites are fetched from Pokémon Showdown.
+ */
 export default function TeamCarousel() {
+  /** Index of the currently displayed team */
   const [index, setIndex] = useState(0);
+
+  /** Apply fade-in effect */
   const [fade, setFade] = useState(true);
+
+  /** Flag to prevent user input during transition animations */
   const [isTransitioning, setIsTransitioning] = useState(false);
   const max = teams.length - 1;
 
@@ -71,13 +85,17 @@ export default function TeamCarousel() {
     });
   }, []);
 
-  // Smooth transition handler
+  /**
+   * Changes the currently viewed team with a fade transition.
+   * @param newIndex - The index of the new team to display.
+   */
   const changeTeam = (newIndex: number) => {
     // Return if currently transitioning
     if (isTransitioning || newIndex === index) return;
     // Start transition
     setIsTransitioning(true);
     setFade(false); // fade out
+
     setTimeout(() => {
       setIndex(newIndex); // switch team
       setFade(true); // fade in

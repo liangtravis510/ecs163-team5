@@ -1,20 +1,23 @@
+/**
+ * @fileoverview RadarChartComparison.tsx
+ * A comparison tool that visualizes base stat differences between two Pokémon using a D3-powered radar chart.
+ * It includes auto-scaling, sprite previews, autocompletion, and smooth transitions for stat polygons.
+ */
+
 import { useEffect, useState, useRef } from "react";
 import * as d3 from "d3";
 import { csv } from "d3-fetch";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
+/** Pokémon base stats in display order */
 const statOrder = ["hp", "attack", "defense", "speed", "sp_def", "sp_atk"];
 const axisLabels = ["HP", "Attack", "Defense", "Speed", "Sp. Def", "Sp. Atk"];
 const defaultMax = 160;
 const csvPath = "/data/pokmeon_competitive.csv";
 import pokeball from "../assets/sprites/pokeball.png";
 
-interface Pokemon {
-  name: string;
-  [key: string]: string | number;
-}
-
+/** Mapping from type names to their corresponding color */
 const typeColors: Record<string, string> = {
   Normal: "#A8A878",
   Fire: "#F08030",
@@ -37,6 +40,19 @@ const typeColors: Record<string, string> = {
   No_type: "#555555",
 };
 
+interface Pokemon {
+  name: string;
+  [key: string]: string | number;
+}
+
+/**
+ * @function getShowdownSpriteName
+ * Maps a Pokémon name to the proper Pokémon Showdown sprite name.
+ * Handles special forms and aliases.
+ *
+ * @param {string} name - Pokémon name
+ * @returns {string} - Correct sprite file name or fallback transformation
+ */
 function getShowdownSpriteName(name: string): string {
   const spriteNameMap: Record<string, string> = {
     "mewtwo-mega-x": "mewtwo-megax",
@@ -182,6 +198,13 @@ function getShowdownSpriteName(name: string): string {
   return spriteNameMap[rawName] || rawName.replace(/[^a-z0-9-]/g, "");
 }
 
+/**
+ * @component RadarChartComparison
+ * Displays a radar chart comparing two Pokémon's base stats.
+ * Includes auto-complete search bars, Pokémon sprites, and animated polygon transitions.
+ *
+ * @returns {JSX.Element}
+ */
 export default function RadarChartComparison() {
   const [data, setData] = useState<Pokemon[]>([]);
   const [pokemon1, setPokemon1] = useState<Pokemon | null>(null);
