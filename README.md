@@ -19,7 +19,13 @@ This project is a data storytelling website built with React and D3.js that aims
 | **Team Builder Assistant** | Add up to 6 Pokémon and see your team’s weaknesses and resistances. |
 | **Radar Chart Comparison** | Compare two Pokémon’s base stats side-by-side with dynamic scaling. |
 ---
+## Dataset
 
+- Source: [Kaggle – Pokémon Competitive Usage (Smogon and VGCWorlds)](https://www.kaggle.com/datasets/danielsmdev/pokemon-competitive-usage-smogon-and-vcgworlds)
+- Contents: Pokémon names, types, base stats, usage rates across multiple years and formats.
+- In the /data file, it includes additional data from the [Smogen Index](https://www.smogon.com/stats/)
+
+---
 
 ## Installation and Setup
 1. **Clone the Repository**
