@@ -8,12 +8,13 @@ This project is a data storytelling website built with React and D3.js that aims
 - Help users discover viable team compositions via a Team Builder and Weaknesses Calculator along with a radar comparison chart
 - Support Users at ** all skill levels ** with guided explanations and dynamic comparisons.
 
+---
 ## Visualizations
 | Component | Description |
 |----------|-------------|
 | **Type Distribution Bar Chart** | Explore the primary and secondary type frequency of Pokémon. |
 | **Type Effectiveness Heatmap** | View how each attacking type interacts with all type combinations for a chosen primary type. |
-| **Stat Overview Histogram** | Select from HP, Attack, Speed, etc., and view Pokémon stat distributions. |
+| **Stat Overview Histogram** | Select from HP, Attack, Speed, etc., and view Pokémon stat distributions along with explanations. |
 | **Streamgraph** | Examine changes in usage of Pokémon types across generations and tournament formats. |
 | **Team Builder Assistant** | Add up to 6 Pokémon and see your team’s weaknesses and resistances. |
 | **Radar Chart Comparison** | Compare two Pokémon’s base stats side-by-side with dynamic scaling. |
