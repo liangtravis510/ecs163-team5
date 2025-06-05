@@ -18,6 +18,10 @@ This project is a data storytelling website built with React and D3.js that aims
 | **Streamgraph** | Examine changes in usage of Pokémon types across generations and tournament formats. |
 | **Team Builder Assistant** | Add up to 6 Pokémon and see your team’s weaknesses and resistances. |
 | **Radar Chart Comparison** | Compare two Pokémon’s base stats side-by-side with dynamic scaling. |
+
+### Type Distribution Bar Chart
+![Type Distribution Bar Chart](src\assets\img\Type_Distribution1.png)
+
 ---
 ## Dataset
 
