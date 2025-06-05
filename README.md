@@ -73,9 +73,9 @@ This project is a data storytelling website built with React and D3.js that aims
 | Team Member       | Contributions                                                                                      |
 |-------------------|----------------------------------------------------------------------------------------------------|
 | **Megan Liu**     | Implemented the Type Distribution Bar Chart and contributed to the final UI layout and integration. |
-| **Travis Liang**  | Developed the Type Heatmap, Stat Distribution Histogram, Team Builder Assistant, and resolved merge conflicts. |
+| **Travis Liang**  | Developed the Type Heatmap, Stat Distribution Histogram, Team Builder Assistant, Team Carousel, and resolved conflicts during merge |
 | **Sean Singleton**| Created the Team Builder, Team Weakness Calculator, optimized the Radar Chart, and finalized the dashboard. |
 | **Shaoke Qi**     | Implemented the first version of the Radar Chart and built the Streamgraph visualization.           |
-| **Zhaoqian Wang** | Processed and cleaned dataset, and tested data integrity and functionality across components.       |
+| **Zhaoqian Wang** | Processed and cleaned dataset.       |
     
 
