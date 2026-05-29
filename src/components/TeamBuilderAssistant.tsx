@@ -671,15 +671,15 @@ export default function TeamBuilderBarChart() {
       .attr("opacity", 0.85)
       .on("mouseover", (_, d) => {
         tooltip.style("opacity", 1).html(`
-    <strong>${d.type}</strong><br/>
-    ${
-      d.value > 0
-        ? `Weaknesses: +${d.value}`
-        : d.value < 0
-          ? `Resistances: ${-d.value}`
-          : "Neutral"
-    }
-  `);
+                    <strong>${d.type}</strong><br/>
+                    ${
+                      d.value > 0
+                        ? `Weaknesses: +${d.value}`
+                        : d.value < 0
+                          ? `Resistances: ${-d.value}`
+                          : "Neutral"
+                    }
+                `);
       })
       .on("mousemove", (event) => {
         tooltip
