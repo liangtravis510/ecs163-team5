@@ -1,4 +1,4 @@
-# ECS 163 Final Project
+# [ECS 163 Final Project](https://pkmsmgvcg.netlify.app/)
 ## Overview
 
 This project is a data storytelling website built with React and D3.js that aims to visualize trends in competitive Pokémon battling across Smogon (Singles) and VGC (Doubles) formats from 2022 to 2024. We use the **Martini Glass** structure to guide users through the basic concepts and introduce the metagame to the user. By the end of the exploration of the competitive metas, users will have the opportunity to use an exploratory approach and create their competitive team using the dedicated team builder.
