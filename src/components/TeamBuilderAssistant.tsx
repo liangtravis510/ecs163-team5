@@ -336,11 +336,9 @@ export default function TeamBuilderBarChart() {
    * Counts how many times each type appears across the current team
    */
   const initialTypeCounts: Record<string, number> = Object.fromEntries(
-    Object.keys(typeColors).map((type) => [type, 0])
+    Object.keys(typeColors).map((type) => [type, 0]),
   );
-  const [typeCounts, setTypeCounts] =
-    useState<Record<string, number>>(initialTypeCounts);
-
+  const [, setTypeCounts] = useState<Record<string, number>>(initialTypeCounts);
   /**
    * Stores the net defensive spread of the team (resistance/weakness profile)
    */
@@ -381,7 +379,7 @@ export default function TeamBuilderBarChart() {
 
     const resolvedTeam = teamList.map((name) => {
       const found = pokemonData.find(
-        (p) => p.name.toLowerCase() === name.toLowerCase()
+        (p) => p.name.toLowerCase() === name.toLowerCase(),
       );
       return found ? found.name : null;
     });
@@ -409,7 +407,7 @@ export default function TeamBuilderBarChart() {
           (p) =>
             !p.name.includes("zygarde-10%-power-construct") &&
             !p.name.includes("zygarde-50%-power-construct") &&
-            !p.name.includes("-totem")
+            !p.name.includes("-totem"),
         );
 
       setPokemonData(parsedData);
@@ -448,7 +446,7 @@ export default function TeamBuilderBarChart() {
     if (isSorted) {
       // Sort types descending by net defensive value
       const sorted = [...filteredTypes].sort(
-        (a, b) => (netDefensiveSpread[b] || 0) - (netDefensiveSpread[a] || 0)
+        (a, b) => (netDefensiveSpread[b] || 0) - (netDefensiveSpread[a] || 0),
       );
       setCurrentTypeOrder(sorted);
     } else {
@@ -469,7 +467,7 @@ export default function TeamBuilderBarChart() {
 
     // Filter pokemonData for names matching the input (case insensitive)
     const filteredSuggestions = pokemonData.filter((pokemon) =>
-      pokemon.name.toLowerCase().includes(value.toLowerCase())
+      pokemon.name.toLowerCase().includes(value.toLowerCase()),
     );
     setSuggestions(filteredSuggestions);
   };
@@ -668,20 +666,20 @@ export default function TeamBuilderBarChart() {
       .attr("y", yScale(0))
       .attr("height", 0)
       .attr("fill", (d) =>
-        d.value > 0 ? "crimson" : d.value < 0 ? "steelblue" : "gray"
+        d.value > 0 ? "crimson" : d.value < 0 ? "steelblue" : "gray",
       )
       .attr("opacity", 0.85)
-      .on("mouseover", (event, d) => {
+      .on("mouseover", (_, d) => {
         tooltip.style("opacity", 1).html(`
-                    <strong>${d.type}</strong><br/>
-                    ${
-                      d.value > 0
-                        ? `Weaknesses: +${d.value}`
-                        : d.value < 0
-                        ? `Resistances: ${-d.value}`
-                        : "Neutral"
-                    }
-                `);
+    <strong>${d.type}</strong><br/>
+    ${
+      d.value > 0
+        ? `Weaknesses: +${d.value}`
+        : d.value < 0
+          ? `Resistances: ${-d.value}`
+          : "Neutral"
+    }
+  `);
       })
       .on("mousemove", (event) => {
         tooltip
@@ -702,7 +700,7 @@ export default function TeamBuilderBarChart() {
       .attr("y", (d) => (d.value >= 0 ? yScale(d.value) : yScale(0)))
       .attr("height", (d) => Math.abs(yScale(d.value) - yScale(0)))
       .attr("fill", (d) =>
-        d.value > 0 ? "crimson" : d.value < 0 ? "steelblue" : "gray"
+        d.value > 0 ? "crimson" : d.value < 0 ? "steelblue" : "gray",
       );
   }, [netDefensiveSpread, currentTypeOrder]);
 
@@ -808,7 +806,7 @@ export default function TeamBuilderBarChart() {
                 {poke ? (
                   <img
                     src={`https://play.pokemonshowdown.com/sprites/gen5/${getShowdownSpriteName(
-                      poke.name
+                      poke.name,
                     )}.png`}
                     alt={poke.name}
                     style={{ width: 72, height: 72, objectFit: "contain" }}
