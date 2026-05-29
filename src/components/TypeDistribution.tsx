@@ -16,7 +16,7 @@ export default function TypeDistribution() {
   const [activePrimary, setActivePrimary] = useState<string | null>(null);
   const [activeSecondaryView, setActiveSecondaryView] = useState(false);
   const [selectedSecondary, setSelectedSecondary] = useState<string | null>(
-    null
+    null,
   );
 
   const scrollToTop = () => {
@@ -109,7 +109,7 @@ export default function TypeDistribution() {
       .selectAll("text")
       .style("font-size", "12px")
       .style("fill", "white");
-      
+
     // Add X axis label
     g.append("text")
       .attr("x", width / 2)
@@ -118,7 +118,7 @@ export default function TypeDistribution() {
       .attr("text-anchor", "middle")
       .style("font-size", "14px")
       .text("Primary Type");
-      
+
     // Add Y axis label
     g.append("text")
       .attr("transform", "rotate(-90)")
@@ -162,7 +162,7 @@ export default function TypeDistribution() {
                 "fill",
                 secType === "no_type"
                   ? typeColors[type]
-                  : typeColors[secType] || "#aaa"
+                  : typeColors[secType] || "#aaa",
               )
 
               .attr("opacity", 0.9)
@@ -178,9 +178,13 @@ export default function TypeDistribution() {
                 d3.select(this).attr("stroke", "none");
               });
             // Add tooltip for secondary type
-            segment.append("title")
-              .text(`${type}-${secType === "no_type" ? "only" : secType}: ${count} Pokémon`);
-            segment.transition()
+            segment
+              .append("title")
+              .text(
+                `${type}-${secType === "no_type" ? "only" : secType}: ${count} Pokémon`,
+              );
+            segment
+              .transition()
               .duration(600)
               .attr("y", y(currentY))
               .attr("height", y(start) - y(currentY));
@@ -229,7 +233,7 @@ export default function TypeDistribution() {
     // Legend for stacked bars (secondary types)
     if (activePrimary && !activeSecondaryView && !selectedSecondary) {
       const legendData = Object.entries(typeColors).filter(
-        ([type]) => type !== "no_type"
+        ([type]) => type !== "no_type",
       );
       const legendItemHeight = 18;
       const legendItemWidth = 100;
@@ -245,7 +249,7 @@ export default function TypeDistribution() {
         .attr(
           "height",
           Math.ceil(legendData.length / legendCols) * legendItemHeight +
-            legendTitleHeight
+            legendTitleHeight,
         )
         .attr("fill", "#1a1f2c")
         .attr("opacity", 0.85)
@@ -269,7 +273,7 @@ export default function TypeDistribution() {
             "transform",
             `translate(${legendX + col * legendItemWidth}, ${
               legendY + row * legendItemHeight
-            })`
+            })`,
           );
 
         group
@@ -358,7 +362,7 @@ export default function TypeDistribution() {
           >
             {typeData[activePrimary]
               .filter((p) =>
-                selectedSecondary ? p.secondary === selectedSecondary : true
+                selectedSecondary ? p.secondary === selectedSecondary : true,
               )
               .map((p, i) => (
                 <Box

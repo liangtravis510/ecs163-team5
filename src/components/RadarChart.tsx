@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 const statOrder = ["hp", "attack", "defense", "speed", "sp_def", "sp_atk"];
 const axisLabels = ["HP", "Attack", "Defense", "Speed", "Sp. Def", "Sp. Atk"];
 const defaultMax = 160;
-const csvPath = "/data/pokmeon_competitive.csv";
+const csvPath = "public/data/pokmeon_competitive.csv";
 import pokeball from "../assets/sprites/pokeball.png";
 
 /** Mapping from type names to their corresponding color */
@@ -237,7 +237,7 @@ export default function RadarChartComparison() {
   useEffect(() => {
     const candidates = [pokemon1, pokemon2].filter(Boolean) as Pokemon[];
     const allStats = candidates.flatMap((pkmn) =>
-      statOrder.map((k) => pkmn[k] as number)
+      statOrder.map((k) => pkmn[k] as number),
     );
     const maxStat = allStats.length ? Math.max(...allStats) : 0;
     setMaxValue(Math.max(defaultMax, maxStat));
@@ -298,7 +298,7 @@ export default function RadarChartComparison() {
         Array(statOrder.length)
           .fill([0, 0])
           .map((p) => p.join(","))
-          .join(" ")
+          .join(" "),
       ); // start collapsed
 
     group
@@ -312,7 +312,7 @@ export default function RadarChartComparison() {
         Array(statOrder.length)
           .fill([0, 0])
           .map((p) => p.join(","))
-          .join(" ")
+          .join(" "),
       ); // start collapsed
   }, []);
 
@@ -410,7 +410,7 @@ export default function RadarChartComparison() {
               setPokemon1Input(value);
               setPokemon1Selected(false);
               const match = data.find(
-                (p) => p.name.toLowerCase() === value.toLowerCase()
+                (p) => p.name.toLowerCase() === value.toLowerCase(),
               );
               setPokemon1(match || null);
             }}
@@ -427,7 +427,7 @@ export default function RadarChartComparison() {
             src={
               pokemon1
                 ? `https://play.pokemonshowdown.com/sprites/gen5/${getShowdownSpriteName(
-                    pokemon1.name
+                    pokemon1.name,
                   )}.png`
                 : pokeball
             }
@@ -507,7 +507,7 @@ export default function RadarChartComparison() {
               setPokemon2Input(value);
               setPokemon2Selected(false);
               const match = data.find(
-                (p) => p.name.toLowerCase() === value.toLowerCase()
+                (p) => p.name.toLowerCase() === value.toLowerCase(),
               );
               setPokemon2(match || null);
             }}
@@ -524,7 +524,7 @@ export default function RadarChartComparison() {
             src={
               pokemon2
                 ? `https://play.pokemonshowdown.com/sprites/gen5/${getShowdownSpriteName(
-                    pokemon2.name
+                    pokemon2.name,
                   )}.png`
                 : pokeball
             }
