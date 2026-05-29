@@ -81,6 +81,10 @@ This project is a data storytelling website built with React and D3.js that aims
     ```bash
     npm run dev
     ```
+
+## **Improvements for future**
+- Add a mobile version for both iPhone and iPad for responsiveness 
+    
     
 ## **Team**
 | Team Member       | Contributions                                                                                      |
@@ -90,8 +94,4 @@ This project is a data storytelling website built with React and D3.js that aims
 | **Sean Singleton**| Created the Team Builder, Team Weakness Calculator, optimized the Radar Chart, and finalized the dashboard. |
 | **Shaoke Qi**     | Implemented the first version of the Radar Chart and built the Streamgraph visualization.           |
 | **Zhaoqian Wang** | Processed and cleaned dataset.       |
-
-## **Improvements for future**
-- Add a mobile version for both iPhone and iPad for responsiveness 
-    
 
